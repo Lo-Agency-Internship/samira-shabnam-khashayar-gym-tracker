@@ -28,6 +28,6 @@ app.get("/", (req, res) => {
 
 // serving not found urls
 app.use((req, res) => {
-    res.send("Page is not found!")
+    res.sendFile("./public/pages/notFound.html", { root: __dirname });
 });
   
