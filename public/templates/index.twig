@@ -1,0 +1,76 @@
+{% extends "./components/html.twig"%}
+
+
+{% block content%}
+    {% include "./components/navbar.twig" %}
+    <main>
+      <section class="container d-flex justify-content-center align-items-center p-5">
+        <div class="card glass2 text-center" style="width: 35rem">
+
+          <div class="card-body ">
+            <h5 class="card-title text-center">Welcome To Pump House</h5>
+            <p class="card-text">
+              For having access to our features, please login or sign-up.
+            </p>
+
+            <p>
+              <button class="btn btn-danger" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
+                  aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Signup/Login</button>
+          </p>
+
+          <div class="row position-relative">
+              <div class="col-6">
+                  <div class="collapse show multi-collapse" id="multiCollapseExample1">
+                      <div class="card card-body">
+
+                          <form>
+                              <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                              </div>
+                              <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1">
+                              </div>
+                              <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                              </div>
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-6 position-absolute">
+                  <div class="collapse multi-collapse" id="multiCollapseExample2">
+                      <div class="card card-body">
+                        <form>
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                          </div>
+                          <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1">
+                          </div>
+                          <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1">
+                          </div>
+                          <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </section>
+    </main>
+{% endblock %}
