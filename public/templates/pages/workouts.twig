@@ -1,38 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "../components/html.twig"%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Tracker - Workouts</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" />
-    <link rel="icon" type="image/x-icon" href="../../assets/images/fav.png" />
-
-</head>
-
-<body>
-    <header>
-        <!-- navbar starts here -->
-        <nav class="navbar" style="background-color:  #696969">
-            <div class="container-xxl">
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <img src="../../assets/images/logo.png" alt="logo" width="45" height="45" />
-                    <span class=" ms-1 fw-bold text-warning"> Pump House </span>
-                </a>
-                <h1 class="text-light">
-                    Workouts
-                </h1>
-
-                <div class="d-flex flex-row-reverse">
-                    <button class="btn btn-danger d-flex" onclick="logout()">
-                        <div class="p-1">Logout</div>
-                    </button>
-                </div>
-            </div>
-        </nav>
-        <!-- navbar ends here -->
-    </header>
+{% block content%}
+    {% include "../components/navbar.twig" %}
 
     <main class="container mt-5">
 
@@ -48,7 +17,7 @@
                     <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                         card's content.</p>
-                    <a href="./modify.html" class="btn btn-primary text-align-right">Edit</a>
+                    <a href="./modify" class="btn btn-primary text-align-right">Edit</a>
                 </div>
             </div>
         </section>
@@ -77,55 +46,7 @@
                     <div class="carousel-item active" data-bs-interval="6000">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 1</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 2</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 3</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 4</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-
+                                {% include "../components/card.twig" %}
                             </div>
                         </div>
                     </div>
@@ -281,18 +202,7 @@
                     <div class="carousel-item active" data-bs-interval="6000">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 1</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
+                                {% include "../components/card.twig" %}
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-body">
                                         <h5 class="card-title">Card title 2</h5>
@@ -455,32 +365,7 @@
         <!-- modals -->
 
 
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Here goes the content
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        {% include "../components/modalPreview.twig" %}
 
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/workouts.js"></script>
-</body>
-
-</html>
+{% endblock %}
