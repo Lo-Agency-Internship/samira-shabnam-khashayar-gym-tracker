@@ -4,7 +4,8 @@
   "description": "This is a simple workout tracker.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "prestart": "node data/utils/db.js"
   },
   "repository": {
     "type": "git",

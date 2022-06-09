@@ -1,9 +1,9 @@
 const express = require("express");
 const port = 3000;
-const path = require("path")
+const path = require("path");
+const db = require("./data/utils/db.js");
 
 const app = express();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 
