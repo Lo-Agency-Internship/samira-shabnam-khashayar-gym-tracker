@@ -1,8 +1,7 @@
 module.exports={
 
-
     // user queries
-    userCreate: `CREATE TABLE users(id int PRIMARY KEY,
+    userTableCreate: `CREATE TABLE IF NOT EXISTS users(id int PRIMARY KEY,
         name string, 
         username string, 
         password string
@@ -16,13 +15,15 @@ module.exports={
         (?,?,?,?)`,
 
     userSelect: `SELECT * FROM users`,
+    userFind: `SELECT * FROM users WHERE username = ?`,
 
 
     // training queries
-    trainingCreate: `CREATE TABLE trainings(id int PRIMARY KEY, 
+    trainingTableCreate: `CREATE TABLE IF NOT EXISTS trainings(id int PRIMARY KEY, 
         userId int, 
         name string, 
-        repeatCount int, 
+        repeatCount int,
+        dueDate string, 
         timeCount int, 
         category string
         )`,
@@ -31,6 +32,7 @@ module.exports={
         userId, 
         name, 
         repeatCount,
+        dueDate,
         timeCount,
         category
         ) VALUES 
@@ -38,5 +40,5 @@ module.exports={
 
     trainingSelect: `SELECT * FROM training`,
 
-    trainingDelete: (id)=> `DELETE FROM trainings WHERE id="${id}"`
+    trainingDelete: `DELETE FROM trainings WHERE id= ?`
 }

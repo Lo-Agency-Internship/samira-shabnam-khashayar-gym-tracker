@@ -1,21 +1,23 @@
 const Database = require("better-sqlite3");
-const Constants = require("./constants");
+const Queries = require("./queries");
 
 
 const db = new Database('./data/db.sqlite3');
 
 
 module.exports={
-    createUser: ()=>{
-        const stmt = db.prepare(Constants.userCreate)
+    database:db,
     
-        const info = stmt.run();
+    findUser: (username)=>{
+        const stmt = db.prepare(Queries.userFind)
+
+        const person = stmt.get(username);
     
-        console.log(info);
+        return person;
     
     },
     insertUser: (id,name,username,password)=>{
-        const stmt = db.prepare(Constants.userInsert);
+        const stmt = db.prepare(Queries.userInsert);
     
         const info = stmt.run(id,name,username,password);
     
@@ -23,7 +25,7 @@ module.exports={
     
     },
     selectUser:()=>{
-        const stmt = db.prepare(Constants.userSelect)
+        const stmt = db.prepare(Queries.userSelect)
     
         const users = stmt.all();
     
@@ -32,16 +34,8 @@ module.exports={
 
 
 
-    createTraining: ()=>{
-        const stmt = db.prepare(Constants.trainingCreate)
-    
-        const info = stmt.run();
-    
-        console.log(info);
-    
-    },
     insertTraining: (id,userId,name,repeat,time,category)=>{
-        const stmt = db.prepare(Constants.trainingInsert);
+        const stmt = db.prepare(Queries.trainingInsert);
     
         const info = stmt.run(id,userId,name,repeat,time,category);
     
@@ -49,16 +43,16 @@ module.exports={
     
     },
     selectTraining:()=>{
-        const stmt = db.prepare(Constants.trainingSelect)
+        const stmt = db.prepare(Queries.trainingSelect)
     
         const trainings = stmt.all();
     
         return trainings
     },
     deleteTraining:(id)=>{
-        const stmt = db.prepare(Constants.trainingDelete(id))
+        const stmt = db.prepare(Queries.trainingDelete)
     
-        const info = stmt.run();
+        const info = stmt.run(id);
     
         console.log(info);
     }

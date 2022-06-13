@@ -1,3 +1,4 @@
+const { application } = require("express");
 const express = require("express");
 const port = 3000;
 const path = require("path");
@@ -22,11 +23,47 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // serving the / route
 app.get("/", (req, res) => {
-    res.render("index")
+    res.render("index",{
+        err: true
+    })
 });
 
+app.post("/api/signup",(req,res)=>{
+    const person = req.body;
+    if(person.pass === person.pass2){
+        const user = db.findUser(person.username);
+        if(user === undefined){
+
+            // hash the password
+            db.insertUser(person.id,person.name,person.username,person.pass);
+            const user = db.findUser(person.username);
+            res.setHeader("user-id",user.id)
+            res.redirect("../workouts")       
+        }
+        else{
+            // err to ui about exists email
+        }
+    }
+    else{
+        // err to ui about not same
+    }
+    // validation
+    
+
+});
 app.get("/workouts", (req, res) => {
-    res.render("pages/workouts")
+    const userId = req.get("user-id");
+    const allTrainings = db.selectTraining();
+    const userTraining = allTrainings.filter(training => training.userId === userId);
+    const otherTrainings = [];
+    
+    allTrainings = allTrainings.filter(training => training.userId !== userId)
+    res.cookie("id",)
+    res.render("pages/workouts",{
+        allTrainings,
+        userTraining,
+        otherTrainings
+    })
 });
 
 app.get("/modify", (req, res) => {
