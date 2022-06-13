@@ -1,8 +1,8 @@
-const { application } = require("express");
 const express = require("express");
 const port = 3000;
 const path = require("path");
 const db = require("./data/utils/db.js");
+const crypto = require("crypto")
 
 const app = express();
 app.use(express.json());
@@ -34,8 +34,11 @@ app.post("/api/signup",(req,res)=>{
         const user = db.findUser(person.username);
         if(user === undefined){
 
-            // hash the password
-            db.insertUser(person.id,person.name,person.username,person.pass);
+            // hashing process
+            const salt = crypto.randomBytes(16).toString('hex');
+            const hash = crypto.pbkdf2Sync(person.pass, salt, 1000, 64, `sha512`).toString(`hex`);
+            // inserting the user into user table
+            db.insertUser(person.name,person.username,hash,salt);
             const user = db.findUser(person.username);
             res.setHeader("user-id",user.id)
             res.redirect("../workouts")       
@@ -53,21 +56,46 @@ app.post("/api/signup",(req,res)=>{
 });
 app.get("/workouts", (req, res) => {
     const userId = req.get("user-id");
-    const allTrainings = db.selectTraining();
-    const userTraining = allTrainings.filter(training => training.userId === userId);
+    const allTrainings = db.selectTrainings().filter(training => training.userId !== userId);
+    const users = db.selectUsers();
     const otherTrainings = [];
     
-    allTrainings = allTrainings.filter(training => training.userId !== userId)
-    res.cookie("id",)
     res.render("pages/workouts",{
+        users,
         allTrainings,
-        userTraining,
         otherTrainings
     })
 });
 
 app.get("/modify", (req, res) => {
-    res.render("pages/modify")
+    const userId = req.get("user-id");
+    const userTrainings = db.selectUserTrainings(userId);
+
+    res.render("pages/modify",{
+        userTrainings
+    })
+});
+
+app.post("/api/addtraining", (req, res) => {
+    const userId = req.get("user-id");
+    const training = req.body;
+    db.insertTraining(userId,training.name,training.repeat,training.time,training.category);
+    
+    res.redirect("../modify")
+});
+
+app.put("/api/edittraining", (req, res) => {
+    const training = req.body;
+    const userTrainings = db.selectUserTrainings(training.id);
+
+    res.redirect("../modify")
+});
+
+app.delete("/api/deletetraining", (req, res) => {
+    const training = req.body;
+    db.deleteTraining(training.id);
+
+    res.redirect("../modify")
 });
 
 

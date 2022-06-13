@@ -16,36 +16,50 @@ module.exports={
         return person;
     
     },
-    insertUser: (id,name,username,password)=>{
+    insertUser: (name,username,hash,salt)=>{
         const stmt = db.prepare(Queries.userInsert);
     
-        const info = stmt.run(id,name,username,password);
+        const info = stmt.run(name,username,hash,salt);
     
         console.log(info);
     
     },
-    selectUser:()=>{
+    selectUsers:()=>{
         const stmt = db.prepare(Queries.userSelect)
     
         const users = stmt.all();
     
         return users
     },
+    getSalt:(username)=>{
+        const stmt = db.prepare(Queries.saltGet)
+    
+        const users = stmt.get(username);
+    
+        return users
+    },
 
 
 
-    insertTraining: (id,userId,name,repeat,time,category)=>{
+    insertTraining: (userId,name,repeat,time,category)=>{
         const stmt = db.prepare(Queries.trainingInsert);
     
-        const info = stmt.run(id,userId,name,repeat,time,category);
+        const info = stmt.run(userId,name,repeat,time,category);
     
         console.log(info);
     
     },
-    selectTraining:()=>{
+    selectTrainings:()=>{
         const stmt = db.prepare(Queries.trainingSelect)
     
         const trainings = stmt.all();
+    
+        return trainings
+    },
+    selectUserTrainings:(id)=>{
+        const stmt = db.prepare(Queries.userTrainingSelect)
+    
+        const trainings = stmt.all(id);
     
         return trainings
     },
