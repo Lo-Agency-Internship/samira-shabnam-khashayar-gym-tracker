@@ -1,64 +1,72 @@
 const Database = require("better-sqlite3");
-const Constants = require("./constants");
+const Queries = require("./queries");
 
 
 const db = new Database('./data/db.sqlite3');
 
 
 module.exports={
-    createUser: ()=>{
-        const stmt = db.prepare(Constants.userCreate)
+    database:db,
     
-        const info = stmt.run();
+    findUser: (username)=>{
+        const stmt = db.prepare(Queries.userFind)
+
+        const person = stmt.get(username);
+    
+        return person;
+    
+    },
+    insertUser: (name,username,hash,salt)=>{
+        const stmt = db.prepare(Queries.userInsert);
+    
+        const info = stmt.run(name,username,hash,salt);
     
         console.log(info);
     
     },
-    insertUser: (id,name,username,password)=>{
-        const stmt = db.prepare(Constants.userInsert);
-    
-        const info = stmt.run(id,name,username,password);
-    
-        console.log(info);
-    
-    },
-    selectUser:()=>{
-        const stmt = db.prepare(Constants.userSelect)
+    selectUsers:()=>{
+        const stmt = db.prepare(Queries.userSelect)
     
         const users = stmt.all();
+    
+        return users
+    },
+    getSalt:(username)=>{
+        const stmt = db.prepare(Queries.saltGet)
+    
+        const users = stmt.get(username);
     
         return users
     },
 
 
 
-    createTraining: ()=>{
-        const stmt = db.prepare(Constants.trainingCreate)
+    insertTraining: (userId,name,repeat,time,category)=>{
+        const stmt = db.prepare(Queries.trainingInsert);
     
-        const info = stmt.run();
-    
-        console.log(info);
-    
-    },
-    insertTraining: (id,userId,name,repeat,time,category)=>{
-        const stmt = db.prepare(Constants.trainingInsert);
-    
-        const info = stmt.run(id,userId,name,repeat,time,category);
+        const info = stmt.run(userId,name,repeat,time,category);
     
         console.log(info);
     
     },
-    selectTraining:()=>{
-        const stmt = db.prepare(Constants.trainingSelect)
+    selectTrainings:()=>{
+        const stmt = db.prepare(Queries.trainingSelect)
     
         const trainings = stmt.all();
     
         return trainings
     },
-    deleteTraining:(id)=>{
-        const stmt = db.prepare(Constants.trainingDelete(id))
+    selectUserTrainings:(id)=>{
+        const stmt = db.prepare(Queries.userTrainingSelect)
     
-        const info = stmt.run();
+        const trainings = stmt.all(id);
+    
+        return trainings
+    },
+    deleteTraining:(id)=>{
+        const stmt = db.prepare(Queries.trainingDelete)
+    
+        const info = stmt.run(id);
     
         console.log(info);
     }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "prestart": "node data/utils/db.js"
+    "prestart": "node migrate.js"
   },
   "repository": {
     "type": "git",
