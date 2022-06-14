@@ -2,7 +2,8 @@ const express = require("express");
 const port = 3000;
 const path = require("path");
 const db = require("./data/utils/db.js");
-const crypto = require("crypto")
+const crypto = require("crypto");
+const axios = require("axios").default;
 
 const app = express();
 app.use(express.json());
@@ -41,7 +42,7 @@ app.post("/api/signup",(req,res)=>{
             db.insertUser(person.name,person.username,hash,salt);
             const user = db.findUser(person.username);
             res.setHeader("user-id",user.id)
-            res.redirect("../workouts")       
+            res.redirect("../workouts")      
         }
         else{
             // err to ui about exists email
