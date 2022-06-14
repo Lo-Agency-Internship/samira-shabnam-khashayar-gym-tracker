@@ -1,10 +1,21 @@
 {% extends "../components/html.twig"%}
+{% import "../components/card.twig" as main %}
+{% import "../components/navbar.twig" as nav %}
+{% import "../components/modals.twig" as modals %}
+{% block navbar %}
+{{nav.navbar("workout",{
+    btn:"btn-danger",
+    onClick:"logout()",
+    name:"logout",
+    secondBtn:"",
+    plans:"",
+})}}
+{% endblock %}
 
-{% block content%}
-    {% include "../components/navbar.twig" %}
 
+{% block content %}
+    {#{% include "../components/navbar.twig" %}#}
     <main class="container mt-5">
-
         <!-- User's training -->
         <section>
             <div class="d-flex justify-content-between">
@@ -21,9 +32,6 @@
                 </div>
             </div>
         </section>
-
-
-
         <!-- Other users' trainings -->
         <section class="my-5">
             <div class="d-flex justify-content-between">
@@ -46,139 +54,46 @@
                     <div class="carousel-item active" data-bs-interval="6000">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                {% include "../components/card.twig" %}
+                                 {% for user in users %}
+                                     {{ main.card(
+                                      {   name:user.name,
+                                        username: user.username,
+                                        id: user.id,
+                                     },
+                                    "bye"
+                                     )}}
+                                 {% endfor %}
+                                 {% for user in users %}
+                                 {{modals.modal( 
+                                        user,
+                                       [{
+                                           userId:2,
+                                            name:"khashayar",
+                                            duaDate:"123",
+                                            category:"abs",
+                                            repeatCount:"2",
+                                            timeCount:"5"
+                                        }]
+                                      )}}
+                                 {% endfor %}
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item" data-bs-interval="6000">
+                  {#<div class="carousel-item" data-bs-interval="6000">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 5</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 6</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 7</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 8</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 9</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 10</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 11</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title 12</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the
-                                            bulk of
-                                            the
-                                            card's content.</p>
-                                        <button class="btn btn-primary text-align-right">Preview</button>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
-                    </div>
+                    </div>#}
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
-
-
-
-
         </section>
-
-
 
         <!-- Other gyms trainings -->
         <section class="my-5">
@@ -202,7 +117,7 @@
                     <div class="carousel-item active" data-bs-interval="6000">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                {% include "../components/card.twig" %}
+                                {#{% include "../components/card.twig" %}#}
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-body">
                                         <h5 class="card-title">Card title 2</h5>
@@ -356,16 +271,9 @@
                     </div>
                 </div>
             </div>
-
-
-
         </section>
-
-
         <!-- modals -->
-
-
-        {% include "../components/modalPreview.twig" %}
+       {#{% include "../components/modalPreview.twig" %}#}
 
     </main>
 {% endblock %}

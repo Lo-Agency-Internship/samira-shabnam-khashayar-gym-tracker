@@ -1,44 +1,47 @@
 {% extends "./components/html.twig"%}
+{% import "./components/navbar.twig" as nav %}
 
+{% block navbar %}
+{{nav.navbar("Welcome to Pump House",{""})}}
+{% endblock %}
 
-{% block content%}
-{% include "./components/navbar.twig" %}
-<main>
-  <section class="container d-flex justify-content-center align-items-center p-5">
-    <div class="card glass2 text-center" style="width: 35rem">
+{% block content %}
+    {#{% include "./components/navbar.twig" %}#}
+    <main>
+      <section class="container d-flex justify-content-center align-items-center p-5">
+        <div class="card glass2 text-center" style="width: 35rem">
 
-      <div class="card-body ">
-        <h5 class="card-title text-center">Welcome To Pump House</h5>
-        <p class="card-text">
-          For having access to our features, please login or sign-up.
-        </p>
-
-        <p>
-          <button class="btn btn-danger" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
-            aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Signup/Login</button>
-        </p>
-
-        <div class="row position-relative">
-          <div class="col-6">
-            <div class="collapse show multi-collapse" id="multiCollapseExample1">
-              <div class="card card-body">
-
-                <form>
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          <div class="card-body ">
+            <h5 class="card-title text-center">Welcome To Pump House</h5>
+            <p class="card-text">
+              For having access to our features, please login or sign-up.
+            </p>
+            <p>
+              <button class="btn btn-danger" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
+                  aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Signup/Login</button>
+          </p>
+          <div class="row justify-content-center position-relative">
+              <div class="col-6">
+                  <div class="collapse show multi-collapse" id="multiCollapseExample1">
+                      <div class="card card-body">
+                          <form method="POST" action="/api/login">
+                              <div class="mb-3">
+                                <label for="loginInputEmail1" class="form-label">Email address:</label>
+                                <input name= "email" type="email" class="form-control" id="loginInputEmail1" aria-describedby="emailHelp" required>
+                              </div>
+                              <div class="mb-3">
+                                <label for="loginInputPassword1" class="form-label">Password:</label>
+                                <input name="pass" type="password" class="form-control" id="loginInputPassword1" required>
+                              </div>
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                      </div>
                   </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                 
               </div>
             </div>
           </div>
-          <div class="col-6 position-absolute">
+          <div class="col-6 position-relative justify-content-center">
             <div class="collapse multi-collapse" id="multiCollapseExample2">
               <div class="card card-body">
                 <form method="POST" action="/api/signup">
@@ -67,8 +70,9 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-</main>
+      </section>
+    </main>
+{% endblock %}
+{% block footer %}
+{{ parent() }}
 {% endblock %}

@@ -28,6 +28,12 @@ app.get("/", (req, res) => {
         err: true
     })
 });
+    
+
+app.post("/api/login",(req,res)=>{
+    //validation
+    res.redirect("../workouts")
+})
 
 app.post("/api/signup",(req,res)=>{
     const person = req.body;
