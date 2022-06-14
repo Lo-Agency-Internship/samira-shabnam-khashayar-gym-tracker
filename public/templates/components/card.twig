@@ -3,15 +3,11 @@
  
 <div class="card" style="width: 18rem;">
     <div class="card-body">
-    
         <h5 class="card-title">{{user.name}} Trainings </h5>
-       
         <h6 class="card-subtitle mb-2 text-muted">{{user.username}}</h6>
         <p class="card-text">{{userTrainingCount}}</p>
-           
         <button  class="btn btn-primary text-align-right" type="button"
-         data-bs-toggle="modal" data-bs-target="#{{user.id}}">Preview</button>
-         
+         data-bs-toggle="modal" data-bs-target="#modal{{user.id}}">Preview</button>
     </div>
 </div>
 {% endmacro %}

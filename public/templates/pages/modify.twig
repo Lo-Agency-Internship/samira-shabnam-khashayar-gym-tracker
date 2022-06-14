@@ -1,6 +1,10 @@
 {% extends "../components/html.twig"%}
 {% import "../components/navbar.twig" as nav %}
+{% import "../components/modals.twig" as modals %}
+{% import  "../components/listitem.twig" as listitem  %}
 {% block navbar %}
+
+
 {{nav.navbar("workout",{
     btn:"btn-danger",
     onClick:"logout()",
@@ -8,69 +12,39 @@
     secondBtn:"btn-warning",
     plan:"Plans",
 })}}
+
 {% endblock %}
 {% block content %}
     {#{% include "../components/navbar.twig" %}#}
-
+{{modals.editModal({
+    id:1,
+    name:"khashayar",
+    repeatCount:1,
+    timeCount:2,
+    duaDate:"2018-07-22",
+}
+)}}
+{{modals.editModal(
+    
+)}}
     <main class="container my-5">
-
-        
-
-
         <div class="d-flex justify-content-between">
                 <h2 class="mb-2">Workouts list</h2>
 
                 <!-- Button trigger add modal -->
-                <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#edit">
+                <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modal0">
                     Add Workout
                 </button>
         </div>
         <div class="list-group">
-            {% include "../components/listItem.twig" %}
-            {% include "../components/listItem.twig" %}
-            {% include "../components/listItem.twig" %}
-            {% include "../components/listItem.twig" %}
-            {% include "../components/listItem.twig" %}
-            {% include "../components/listItem.twig" %}
-            <a href="" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal"
-                data-bs-target="#edit">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-0">Workout Name 2</h5>
-                    <small class="text-muted">8 Days to the Workout Due Date</small>
-                </div>
-                <small class="text-secondary">Workout Category</small>
-                <p class="my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, culpa, nihil numquam
-                    similique recusandae officia dolorem fugiat suscipit, quia ipsa pariatur? Odit aliquid, quis
-                    laboriosam possimus, eius deleniti laborum esse unde, tempora voluptates reiciendis earum aperiam
-                    sapiente molestiae rem quidem fuga dignissimos dolorum quae! Impedit voluptatem autem et facilis
-                    dolores?</p>
-                <small class="border-end border-3 border-warning pe-1">N time of sets</small>
-                <small>N time of repeats</small>
-            </a>
-            <a href="" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal"
-                data-bs-target="#edit">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-0">Workout Name 3</h5>
-                    <small class="text-muted">3 Days to the Workout Due Date</small>
-                </div>
-                <small class="text-secondary">Workout Category</small>
-                <p class="my-2">Description of the workout.</p>
-                <small class="border-end border-3 border-warning pe-1">N time of sets</small>
-                <small>N time of repeats</small>
-            </a>
-        </div>
-
-
-
-        
-
-
-
-        <!-- Add Modal -->
-        {% include "../components/modalEdit.twig" %}
-
-
-        <!-- Edit Modal -->
-        {% include "../components/modalEdit.twig" %}
+            {{listitem.list({ 
+            id:1,
+            name:"ssd",
+            category:"abs",
+            repeatCount:1,
+            timeCount:2,
+            duaDate:"2018-07-22"}
+            )}}
+           
     </main>
 {% endblock %}

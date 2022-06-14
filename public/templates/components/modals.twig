@@ -1,7 +1,7 @@
 
 {% macro modal (user,userWorkouts) %}
 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal fade" id="{{ user.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="modal{{ user.id }}" tabindex="-1" aria-labelledby="{{ user.id }}"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -26,5 +26,67 @@
             </div>
         </div>
     </div
+</div>
+{% endmacro %}
+
+
+{% macro editModal(userWorkout = {id:0}) %}
+<div class="modal fade" id="modal{{userWorkout.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add New Workout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                        <select class="form-select" id="inputGroupSelect01" required>
+                            <option selected disabled value="">Choose...</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Workout Name"
+                            aria-label="Recipient's username" aria-describedby="basic-addon2" required value={{userWorkout.name}}>
+                        <span class="input-group-text" id="basic-addon2">Name</span>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="number" class="form-control" placeholder="Repeats" aria-label="Repeats"
+                                min="0" required value={{userWorkout.repeatCount}}>
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" placeholder="Sets" aria-label="Sets"
+                                min="0" required value={{userWorkout.timeCount}}>
+                        </div>
+                    </div>
+                    <div class="row g-2 my-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input name="date" type="date" class="form-control" id="floatingInputValue"
+                                    required value={{userWorkout.duaDate}}>
+                                <label for="floatingSelectGrid">Pick a due Date</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  {% if userWorkout.id == 0 %}
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Add</button>
+                  {% else %}
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-danger">Delete</button>
+                      <button type="submit" class="btn btn-warning">Edit</button>
+                 {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endmacro %}
