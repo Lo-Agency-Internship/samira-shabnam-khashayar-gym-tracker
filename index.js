@@ -24,6 +24,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
     res.render("index")
 });
+    
+
+app.post("/api/login",(req,res)=>{
+    //validation
+    res.redirect("../workouts")
+})
 
 app.get("/workouts", (req, res) => {
     res.render("pages/workouts")

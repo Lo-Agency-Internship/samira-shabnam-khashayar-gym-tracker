@@ -1,9 +1,12 @@
 {% extends "../components/html.twig"%}
+{% import "../components/navbar.twig" as nav %}
+{% block title %}Not found{% endblock %}
 
-{% block content%}
-    {% include "../components/navbar.twig" %}
-
-
+{% block navbar %}
+{{nav.navbar("Not Found",{""})}}
+{% endblock %}
+{% block content %}
+    {#{% include "../components/navbar.twig" %}#}
     <main class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
             <div class="text-center">
@@ -16,4 +19,7 @@
             </div>
         </div>
     </main>
+{% endblock %}
+{% block footer %}
+{{ parent() }}
 {% endblock %}

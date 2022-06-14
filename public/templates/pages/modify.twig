@@ -1,7 +1,16 @@
 {% extends "../components/html.twig"%}
-
-{% block content%}
-    {% include "../components/navbar.twig" %}
+{% import "../components/navbar.twig" as nav %}
+{% block navbar %}
+{{nav.navbar("workout",{
+    btn:"btn-danger",
+    onClick:"logout()",
+    name:"logout",
+    secondBtn:"btn-warning",
+    plan:"Plans",
+})}}
+{% endblock %}
+{% block content %}
+    {#{% include "../components/navbar.twig" %}#}
 
     <main class="container my-5">
 

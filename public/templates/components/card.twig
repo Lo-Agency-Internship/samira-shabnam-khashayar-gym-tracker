@@ -1,12 +1,17 @@
+
+{% macro card(user, userTrainingCount) %}
+ 
 <div class="card" style="width: 18rem;">
     <div class="card-body">
-        <h5 class="card-title">Card title Khashayar</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make
-            up the
-            bulk of
-            the
-            card's content.</p>
-        <button class="btn btn-primary text-align-right">Preview</button>
+    
+        <h5 class="card-title">{{user.name}} Trainings </h5>
+       
+        <h6 class="card-subtitle mb-2 text-muted">{{user.username}}</h6>
+        <p class="card-text">{{userTrainingCount}}</p>
+           
+        <button  class="btn btn-primary text-align-right" type="button"
+         data-bs-toggle="modal" data-bs-target="#{{user.id}}">Preview</button>
+         
     </div>
 </div>
+{% endmacro %}

@@ -1,7 +1,18 @@
 {% extends "../components/html.twig"%}
+{% import "../components/main.twig" as main %}
+{% import "../components/navbar.twig" as nav %}
+{% block navbar %}
+{{nav.navbar("workout",{
+    btn:"btn-danger",
+    onClick:"logout()",
+    name:"logout",
+})}}
+{% endblock %}
 
-{% block content%}
-    {% include "../components/navbar.twig" %}
+{% block content %}
+    {#{% include "../components/navbar.twig" %}#}
+
+
 
     <main class="container mt-5">
 
@@ -46,7 +57,41 @@
                     <div class="carousel-item active" data-bs-interval="6000">
                         <div class="d-block w-100">
                             <div class="d-flex gap-2 justify-content-between">
-                                {% include "../components/card.twig" %}
+                                 {% for user in users %}
+                                     {{ main.card(
+                                    {   name:user.name,
+                                        username: user.username,
+                                
+                                        
+                                    },
+                                    "bye"
+                                ) }}
+                                 {% endfor %}
+                               
+                                {{ main.card(
+                                    {   title:"title3,",
+                                        username: "shabnam",
+                                        description:"text3",
+                                        
+                                    },
+                                    "bye"
+                                ) }}
+                                 {{ main.card(
+                                    {   title:"title1,",
+                                        username: "khashayar",
+                                        description:"text1",
+                                        
+                                    },
+                                    "salam"
+                                ) }}
+                                  {{ main.card(
+                                    {   title:"title1,",
+                                        username: "khashayar",
+                                        description:"text1",
+                                        
+                                    },
+                                    "salam"
+                                ) }}
                             </div>
                         </div>
                     </div>
@@ -364,8 +409,7 @@
 
         <!-- modals -->
 
-
-        {% include "../components/modalPreview.twig" %}
+       {% include "../components/modalPreview.twig" %}
 
     </main>
 {% endblock %}
