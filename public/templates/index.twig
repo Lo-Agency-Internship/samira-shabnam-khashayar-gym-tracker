@@ -23,15 +23,38 @@
           <div class="row justify-content-center position-relative">
               <div class="col-6">
                   <div class="collapse show multi-collapse" id="multiCollapseExample1">
-                      <div class="card card-body">
-                          <form method="POST" action="/api/login">
+                      <div x-data="{
+                                  email:'',
+                                  pass:'',
+                                 login(){
+                                   const formData={
+                                   email:this.email,
+                                   pass:this.pass }
+                                 fetch('/api/login', {
+                                   method: 'POST',
+                         headers: { 'Content-type': 'application/json'},
+                                  body:JSON.stringify(formData)
+                                       }).then(response => {
+                                         const id=response.headers.get(`user-id`)
+                                         localStorage.setItem(`userId`,id)
+                                         window.location.href='/workouts'
+                                       })
+                                      }
+                                     }"
+                      
+                      
+                      
+                      
+                       class="card card-body">
+                      
+                          <form @submit.prevent="login">
                               <div class="mb-3">
                                 <label for="loginInputEmail1" class="form-label">Email address:</label>
-                                <input name= "email" type="email" class="form-control" id="loginInputEmail1" aria-describedby="emailHelp" required>
+                                <input x-model= "email" type="email" class="form-control" id="loginInputEmail1" aria-describedby="emailHelp" required>
                               </div>
                               <div class="mb-3">
                                 <label for="loginInputPassword1" class="form-label">Password:</label>
-                                <input name="pass" type="password" class="form-control" id="loginInputPassword1" required>
+                                <input x-model="pass" type="password" class="form-control" id="loginInputPassword1" required>
                               </div>
                               <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
@@ -65,7 +88,11 @@
                     headers: { 'Content-type': 'application/json'},
                     
                     body:JSON.stringify(formData)
-                  }).then(response => console.log(response.headers.get('user-id')))
+                  }).then(response => {
+                     const id=response.headers.get(`user-id`)
+                     localStorage.setItem(`userId`,id)
+                     window.location.href='/workouts'
+                  })
                 }
               }" 
                    class="card card-body">
