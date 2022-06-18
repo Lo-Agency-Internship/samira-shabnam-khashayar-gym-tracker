@@ -32,7 +32,24 @@ app.get("/", (req, res) => {
 
 app.post("/api/login",(req,res)=>{
     //validation
-    res.redirect("../workouts")
+    const userLogin=req.body;
+    const dbUser=db.findUser(userLogin.email)
+    if(dbUser===undefined){
+        //send error to ui
+
+    }
+    else{
+        const salt=dbUser.salt;
+        const hash = crypto.pbkdf2Sync(userLogin.pass, salt, 1000, 64, `sha512`).toString(`hex`);
+        if(hash===dbUser.hash){
+            res.setHeader("user-id",dbUser.id)
+            res.end()    
+        }
+
+
+    }
+    
+   
 })
 
 app.post("/api/signup",(req,res)=>{
