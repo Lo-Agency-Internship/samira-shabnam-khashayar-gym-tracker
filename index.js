@@ -38,17 +38,17 @@ app.post("/api/login",(req,res)=>{
 app.post("/api/signup",(req,res)=>{
     const person = req.body;
     if(person.pass === person.pass2){
-        const user = db.findUser(person.username);
+        const user = db.findUser(person.email);
         if(user === undefined){
-
             // hashing process
             const salt = crypto.randomBytes(16).toString('hex');
             const hash = crypto.pbkdf2Sync(person.pass, salt, 1000, 64, `sha512`).toString(`hex`);
             // inserting the user into user table
-            db.insertUser(person.name,person.username,hash,salt);
-            const user = db.findUser(person.username);
+            db.insertUser(person.name,person.email,hash,salt);
+            const user = db.findUser(person.email);
+            console.log(user.id)
             res.setHeader("user-id",user.id)
-            res.redirect("../workouts")      
+            res.end()    
         }
         else{
             // err to ui about exists email

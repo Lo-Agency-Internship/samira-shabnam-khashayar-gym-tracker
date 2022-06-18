@@ -43,26 +43,51 @@
           </div>
           <div class="col-6 position-relative justify-content-center">
             <div class="collapse multi-collapse" id="multiCollapseExample2">
-              <div class="card card-body">
-                <form method="POST" action="/api/signup">
+         <div x-data="{
+
+                name:'',
+                email:'',
+                pass:'',
+                pass2:'',
+
+
+                register(){
+                   console.log(this.name,this.email,this.pass,this.pass2)
+                  const formData={
+                    name:this.name,
+                    email:this.email,
+                    pass:this.pass,
+                    pass2:this.pass2
+                  }
+                 console.log(formData)
+                  fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-type': 'application/json'},
+                    
+                    body:JSON.stringify(formData)
+                  }).then(response => console.log(response.headers.get('user-id')))
+                }
+              }" 
+                   class="card card-body">
+                <form  @submit.prevent="register">
                   <div class="mb-3">
                     <label for="signUpInputName" class="form-label">Name:</label>
-                    <input name="name" type="text" class="form-control" id="signUpInputName" required>
+                    <input x-model="name" type="text" class="form-control" id="signUpInputName" required>
                   </div>
                   <div class="mb-3">
                     <p class="text-danger d-none {{err : "d-block" ? ""}}">The email is already registered!</p>
                     <label for="signUpInputEmail" class="form-label">Email address:</label>
-                    <input name="username" type="email" class="form-control" id="signUpInputEmail"
+                    <input x-model="email" type="email" class="form-control" id="signUpInputEmail"
                       aria-describedby="emailHelp" required>
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                   </div>
                   <div class="mb-3">
                     <label for="signUpInputPassword" class="form-label">Password:</label>
-                    <input name="pass" type="password" class="form-control" id="signUpInputPassword" required>
+                    <input x-model="pass" type="password" class="form-control" id="signUpInputPassword" required>
                   </div>
                   <div class="mb-3">
                     <label for="signUpInputPassword2" class="form-label">Confirm Password:</label>
-                    <input name="pass2" type="password" class="form-control" id="signUpInputPassword2" required>
+                    <input x-model="pass2" type="password" class="form-control" id="signUpInputPassword2" required>
                   </div>
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -72,6 +97,7 @@
         </div>
       </section>
     </main>
+
 {% endblock %}
 {% block footer %}
 {{ parent() }}
