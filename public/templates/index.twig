@@ -26,18 +26,31 @@
                       <div x-data="{
                                   email:'',
                                   pass:'',
+                                  err:false,
                                  login(){
                                    const formData={
                                    email:this.email,
                                    pass:this.pass }
                                  fetch('/api/login', {
                                    method: 'POST',
-                         headers: { 'Content-type': 'application/json'},
+                                  headers: { 'Content-type': 'application/json'},
                                   body:JSON.stringify(formData)
-                                       }).then(response => {
-                                         const id=response.headers.get(`user-id`)
-                                         localStorage.setItem(`userId`,id)
-                                         window.location.href='/workouts'
+                                       }).then(response => { 
+                                         const error=response.headers.get('err')
+                                         switch (error) {
+                                          case 'notExist':
+                                          this.err = true
+                                          break;
+
+                                          case 'notMatch':
+                                          this.err = true
+                                          break;
+
+
+                                          default:
+                                            window.location.href='/workouts'
+                                            break;
+                                         }
                                        })
                                       }
                                      }"
@@ -48,6 +61,8 @@
                        class="card card-body">
                       
                           <form @submit.prevent="login">
+                              <p x-show="err" class="text-danger">Username or Password is incorrect!</p>
+
                               <div class="mb-3">
                                 <label for="loginInputEmail1" class="form-label">Email address:</label>
                                 <input x-model= "email" type="email" class="form-control" id="loginInputEmail1" aria-describedby="emailHelp" required>
@@ -55,6 +70,7 @@
                               <div class="mb-3">
                                 <label for="loginInputPassword1" class="form-label">Password:</label>
                                 <input x-model="pass" type="password" class="form-control" id="loginInputPassword1" required>
+                              
                               </div>
                               <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
@@ -72,10 +88,11 @@
                 email:'',
                 pass:'',
                 pass2:'',
+                emailErr:false,
+                passErr:false,
 
 
                 register(){
-                   console.log(this.name,this.email,this.pass,this.pass2)
                   const formData={
                     name:this.name,
                     email:this.email,
@@ -89,9 +106,22 @@
                     
                     body:JSON.stringify(formData)
                   }).then(response => {
-                     const id=response.headers.get(`user-id`)
-                     localStorage.setItem(`userId`,id)
-                     window.location.href='/workouts'
+                     const error = response.headers.get('err');
+                     switch (error) {
+                        case 'notMatched':
+                        this.passErr = true
+                        break;
+
+                        case 'exists':
+                        this.emailErr = true
+                        break;
+
+
+                        default:
+                        window.location.href='/workouts'
+                        break;
+                      }
+                     
                   })
                 }
               }" 
@@ -102,10 +132,11 @@
                     <input x-model="name" type="text" class="form-control" id="signUpInputName" required>
                   </div>
                   <div class="mb-3">
-                    <p class="text-danger d-none {{err : "d-block" ? ""}}">The email is already registered!</p>
                     <label for="signUpInputEmail" class="form-label">Email address:</label>
                     <input x-model="email" type="email" class="form-control" id="signUpInputEmail"
                       aria-describedby="emailHelp" required>
+                    <p x-show="emailErr" class="text-danger">The email is already registered!</p>
+
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                   </div>
                   <div class="mb-3">
@@ -115,6 +146,7 @@
                   <div class="mb-3">
                     <label for="signUpInputPassword2" class="form-label">Confirm Password:</label>
                     <input x-model="pass2" type="password" class="form-control" id="signUpInputPassword2" required>
+                    <p x-show="passErr" class="text-danger">Passwords must match with each other!</p>
                   </div>
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
