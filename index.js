@@ -42,7 +42,8 @@ app.post("/api/login",(req,res)=>{
         const salt=dbUser.salt;
         const hash = crypto.pbkdf2Sync(userLogin.pass, salt, 1000, 64, `sha512`).toString(`hex`);
         if(hash===dbUser.hash){
-            res.cookie('user-id',`${dbUser.id}`)        }
+            res.cookie('user-id',`${dbUser.id}`).end()        
+        }
         else{
             res.setHeader("err","notMatch").end();
 
@@ -64,7 +65,7 @@ app.post("/api/signup",(req,res)=>{
             // inserting the user into user table
             db.insertUser(person.name,person.email,hash,salt);
             const user = db.findUser(person.email);
-            res.cookie('user-id',`${user.id}`)
+            res.cookie('user-id',`${user.id}`).end()
         }
         else{
             // err to ui about exists email
