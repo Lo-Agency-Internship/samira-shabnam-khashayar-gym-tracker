@@ -122,6 +122,18 @@ app.delete("/api/deletetraining", (req, res) => {
     res.redirect("../modify")
 });
 
+app.get("/api/trainings", (req, res) => {
+    // let allTrainings = db.selectTrainings();
+    // const users = db.selectUsers();
+    // const usersName = users.map(user=> {user.id, user.name});
+    // allTrainings = allTrainings.map(training=>{
+    //     return training.userId = usersName.find(user=> user.id === training.userId).name
+    // })
+    let allTrainings = db.selectJoinedTables();
+    res.json(allTrainings);
+
+});
+
 
 // serving not found urls
 app.use((req, res) => {

@@ -44,5 +44,7 @@ module.exports={
     trainingSelect: `SELECT * FROM trainings`,
     userTrainingSelect: `SELECT * FROM trainings WHERE userId= ?`,
 
-    trainingDelete: `DELETE FROM trainings WHERE id= ?`
+    trainingDelete: `DELETE FROM trainings WHERE id= ?`,
+
+    joinTrainingWithUsername: `SELECT * FROM trainings INNER JOIN users ON trainings.userId = users.id;`
 }
