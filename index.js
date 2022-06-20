@@ -24,9 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // serving the / route
 app.get("/", (req, res) => {
-    res.render("index",{
-        err: true
-    })
+    res.render("index")
 });
     
 
@@ -36,16 +34,19 @@ app.post("/api/login",(req,res)=>{
     const dbUser=db.findUser(userLogin.email)
     if(dbUser===undefined){
         //send error to ui
+        
+        res.setHeader("err", "notExist").end();
 
     }
     else{
         const salt=dbUser.salt;
         const hash = crypto.pbkdf2Sync(userLogin.pass, salt, 1000, 64, `sha512`).toString(`hex`);
         if(hash===dbUser.hash){
-            res.setHeader("user-id",dbUser.id)
-            res.end()    
-        }
+            res.cookie('user-id',`${dbUser.id}`)        }
+        else{
+            res.setHeader("err","notMatch").end();
 
+        }
 
     }
     
@@ -63,29 +64,44 @@ app.post("/api/signup",(req,res)=>{
             // inserting the user into user table
             db.insertUser(person.name,person.email,hash,salt);
             const user = db.findUser(person.email);
-            console.log(user.id)
-            res.setHeader("user-id",user.id)
-            res.end()    
+            res.cookie('user-id',`${user.id}`)
         }
         else{
             // err to ui about exists email
+            res.setHeader("err", "exists").end();
         }
     }
     else{
         // err to ui about not same
+        res.setHeader("err", "notMatched").end();
+        
     }
     // validation
     
 
 });
 app.get("/workouts", (req, res) => {
-    const userId = req.get("user-id");
+    const cookiesArr = req.headers.cookie.split(";");
+    const userIdArr = cookiesArr[0].split('=');
+    const userId = parseInt(userIdArr[1]);
     const allTrainings = db.selectTrainings().filter(training => training.userId !== userId);
-    const users = db.selectUsers();
-    const otherTrainings = [];
+    let allUsers = db.selectUsers().filter(user=> user.id !== userId);
+    let arrUsers =[]
+    let temp = [];
     
+    allUsers.forEach((user,idx)=>{
+        temp.push(user);
+        // console.log(temp);
+        if(temp.length === 4 || idx+1 === allUsers.length) {
+            arrUsers.push(temp);
+            // console.log("helia");
+            temp = [];
+        }
+    })
+    const otherTrainings = [];    
     res.render("pages/workouts",{
-        users,
+        
+        arrUsers,
         allTrainings,
         otherTrainings
     })
