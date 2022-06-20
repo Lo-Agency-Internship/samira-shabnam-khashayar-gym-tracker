@@ -1,4 +1,4 @@
-{% macro navbar (title,item) %}
+{% macro navbar (title, logoutBtn = false, planBtn = false) %}
 <header>
         <!-- navbar starts here -->
         <nav class="navbar" style="background-color:  #696969">
@@ -10,14 +10,25 @@
                 <h1 class="text-light">
                     {{title}}
                 </h1>
-                <div class="d-flex flex-row-reverse"> 
-                 <button type="button" class="btn {{item.btn}}" onclick="{{item.onClick}}">
-                    <div class="p-1">{{item.name}}</div>
-                    </button>
+                <div
+                    x-data="{
+                        logout(){
+                            
+                        }
+
+                    }"
+                    class="d-flex flex-row-reverse">
+                    {% if logoutBtn == true %}
+                        <button type="button" onclick="logout()" class="btn btn-danger" onclick="logout()">
+                            <div class="p-1">Logout</div>
+                        </button>
+                    {% endif %}
                     
-                     <a href="../workouts" class="btn {{item.secondBtn}} me-3">
-                        <div class="p-1">{{item.plan}}</div>
-                    </a>
+                    {% if planBtn == true %}
+                        <a href="../workouts" class="btn btn-primary me-3">
+                            <div class="p-1">Plans</div>
+                        </a>
+                    {% endif %}
                    
                 </div>
             </div>

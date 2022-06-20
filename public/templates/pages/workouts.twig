@@ -3,13 +3,7 @@
 {% import "../components/navbar.twig" as nav %}
 {% import "../components/modals.twig" as modals %}
 {% block navbar %}
-{{nav.navbar("workout",{
-    btn:"btn-danger",
-    onClick:"logout()",
-    name:"logout",
-    secondBtn:"",
-    plans:"",
-})}}
+{{nav.navbar("Workouts",true,false)}}
 {% endblock %}
 
 
