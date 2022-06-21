@@ -109,26 +109,29 @@ app.get("/workouts", (req, res) => {
 });
 
 app.get("/modify", (req, res) => {
-    const userId = req.get("user-id");
+    const cookiesArr = req.headers.cookie.split(";");
+    const userIdArr = cookiesArr[0].split('=');
+    const userId = parseInt(userIdArr[1]);
     const userTrainings = db.selectUserTrainings(userId);
-
+    const nowDate=new Date()
     res.render("pages/modify",{
-        userTrainings
+        userTrainings,
+        nowDate
     })
+    
 });
 
 app.post("/api/addtraining", (req, res) => {
-    const userId = req.get("user-id");
     const training = req.body;
-    db.insertTraining(userId,training.name,training.repeat,training.time,training.category);
-    
+    db.insertTraining(parseInt(training.userId),training.name,parseInt(training.repeatCount),training.dueDate,parseInt(training.timeCount),training.category);
     res.redirect("../modify")
+    
+    
 });
 
 app.put("/api/edittraining", (req, res) => {
     const training = req.body;
     const userTrainings = db.selectUserTrainings(training.id);
-
     res.redirect("../modify")
 });
 

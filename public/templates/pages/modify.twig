@@ -30,15 +30,17 @@
                     Add Workout
                 </button>
         </div>
+        {% for training in userTrainings %}
+
         <div class="list-group">
             {{listitem.list({ 
-            id:1,
-            name:"ssd",
-            category:"abs",
-            repeatCount:1,
-            timeCount:2,
-            duaDate:"2018-07-22"}
-            )}}
-           
+            id:training.id,
+            name:training.name,
+            category:training.category,
+            repeatCount:training.repeatCount,
+            timeCount:training.timeCount,
+            duaDate:training.duaDate
+            } ,nowDate)}}
+           {% endfor %}
     </main>
 {% endblock %}
