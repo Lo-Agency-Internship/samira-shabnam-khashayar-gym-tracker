@@ -34,16 +34,42 @@
 <div class="modal fade" id="modal{{userWorkout.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div x-data="{userId:'',
+                      name:'',
+                      dueDate:'',
+                      category:'',
+                    repeatCount:'',
+                    timeCount:'',
+                    modalEdit(){
+                    const id=document.cookie.split('=')[1]
+                      const modalData={
+                          userId:id,
+                          name:this.name,
+                          dueDate:this.dueDate,
+                          category:this.category,
+                          repeatCount:this.repeatCount,
+                          timeCount:this.timeCount
+                      }
+                      fetch('/api/addtraining',{
+                          method:'POST',
+                          headers:{ 'Content-type': 'application/json'},
+                          body:JSON.stringify(modalData)
+                          }).then(window.location.href='../modify')
+                    }
+
+
+
+        }" class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Add New Workout</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="">
+            
+            <form @submit.prevent="modalEdit">
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">Category</label>
-                        <select class="form-select" id="inputGroupSelect01" required>
+                        <select x-model="category" class="form-select" id="inputGroupSelect01" required>
                             <option selected disabled value="">Choose...</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
@@ -51,25 +77,25 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Workout Name"
+                        <input x-model="name" type="text" class="form-control" placeholder="Workout Name"
                             aria-label="Recipient's username" aria-describedby="basic-addon2" required value={{userWorkout.name}}>
                         <span class="input-group-text" id="basic-addon2">Name</span>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="number" class="form-control" placeholder="Repeats" aria-label="Repeats"
+                            <input x-model="repeatCount" type="number" class="form-control" placeholder="Repeats" aria-label="Repeats"
                                 min="0" required value={{userWorkout.repeatCount}}>
                         </div>
                         <div class="col">
-                            <input type="number" class="form-control" placeholder="Sets" aria-label="Sets"
+                            <input x-model="timeCount"  type="number" class="form-control" placeholder="Sets" aria-label="Sets"
                                 min="0" required value={{userWorkout.timeCount}}>
                         </div>
                     </div>
                     <div class="row g-2 my-2">
                         <div class="col-md">
                             <div class="form-floating">
-                                <input name="date" type="date" class="form-control" id="floatingInputValue"
-                                    required value={{userWorkout.duaDate}}>
+                                <input x-model="dueDate" name="date" type="date" class="form-control" id="floatingInputValue"
+                                    required value={{userWorkout.dueDate}}>
                                 <label for="floatingSelectGrid">Pick a due Date</label>
                             </div>
                         </div>

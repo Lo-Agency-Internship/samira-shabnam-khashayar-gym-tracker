@@ -41,10 +41,9 @@ module.exports={
 
 
 
-    insertTraining: (userId,name,repeat,time,category)=>{
+    insertTraining: (userId,name,repeat,dueDate,time,category)=>{
         const stmt = db.prepare(Queries.trainingInsert);
-    
-        const info = stmt.run(userId,name,repeat,time,category);
+        const info = stmt.run(userId,name,repeat,dueDate,time,category);
     
         console.log(info);
     
