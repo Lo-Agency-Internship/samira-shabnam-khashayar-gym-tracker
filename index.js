@@ -4,6 +4,7 @@ const path = require("path");
 const db = require("./data/utils/db.js");
 const crypto = require("crypto");
 const axios = require("axios").default;
+const global = require("./utils.js")
 
 const app = express();
 app.use(express.json());
@@ -42,7 +43,10 @@ app.post("/api/login",(req,res)=>{
         const salt=dbUser.salt;
         const hash = crypto.pbkdf2Sync(userLogin.pass, salt, 1000, 64, `sha512`).toString(`hex`);
         if(hash===dbUser.hash){
-            res.cookie('user-id',`${dbUser.id}`).end()        
+            const id = dbUser.id;
+            const token = crypto.randomBytes(16).toString('hex');
+            global.setId(id,token);
+            res.cookie('token',`${token}`).end()        
         }
         else{
             res.setHeader("err","notMatch").end();
@@ -65,7 +69,10 @@ app.post("/api/signup",(req,res)=>{
             // inserting the user into user table
             db.insertUser(person.name,person.email,hash,salt);
             const user = db.findUser(person.email);
-            res.cookie('user-id',`${user.id}`).end()
+            const id = user.id;
+            const token = crypto.randomBytes(16).toString('hex');
+            global.setId(id,token);
+            res.cookie('token',`${token}`).end()
         }
         else{
             // err to ui about exists email
@@ -82,11 +89,10 @@ app.post("/api/signup",(req,res)=>{
 
 });
 app.get("/workouts", (req, res) => {
-    const cookiesArr = req.headers.cookie.split(";");
-    const userIdArr = cookiesArr[0].split('=');
-    const userId = parseInt(userIdArr[1]);
-    const allTrainings = db.selectTrainings().filter(training => training.userId !== userId);
-    let allUsers = db.selectUsers().filter(user=> user.id !== userId);
+    const userToken = global.cookieParser(req.headers.cookie);
+    const userGV = global.getId(userToken)
+    const allTrainings = db.selectTrainings().filter(training => training.userId !== userGV.id);
+    let allUsers = db.selectUsers().filter(user=> user.id !== userGV.id);
     let arrUsers =[]
     let temp = [];
     
@@ -109,10 +115,9 @@ app.get("/workouts", (req, res) => {
 });
 
 app.get("/modify", (req, res) => {
-    const cookiesArr = req.headers.cookie.split(";");
-    const userIdArr = cookiesArr[0].split('=');
-    const userId = parseInt(userIdArr[1]);
-    const userTrainings = db.selectUserTrainings(userId);
+    const userToken = global.cookieParser(req.headers.cookie);
+    const userGV = global.getId(userToken)
+    const userTrainings = db.selectUserTrainings(userGV.id);
     const nowDate=new Date()
     res.render("pages/modify",{
         userTrainings,
