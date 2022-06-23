@@ -10,14 +10,14 @@
 {% endblock %}
 {% block content %}
     {#{% include "../components/navbar.twig" %}#}
-{{modals.editModal({
+{# {{modals.editModal({
     id:1,
     name:"khashayar",
     repeatCount:1,
     timeCount:2,
     duaDate:"2018-07-22",
 }
-)}}
+)}} #}
 {{modals.editModal(
     
 )}}
@@ -39,8 +39,17 @@
             category:training.category,
             repeatCount:training.repeatCount,
             timeCount:training.timeCount,
-            duaDate:training.duaDate
+            dueDate:training.dueDate
             } ,nowDate)}}
+            </div>
+            {{modals.editModal({
+                 id:training.id,
+                 name:training.name,
+                repeatCount:training.repeatCount,
+                timeCount:training.timeCount,
+                dueDate:training.dueDate,
+            }
+            )}}
            {% endfor %}
     </main>
 {% endblock %}
