@@ -1,12 +1,12 @@
 {% macro list(userWorkout,nowDate) %}
-<a href="" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal"
+<a  href="" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal"
     data-bs-target="#modal{{userWorkout.id}}">
     <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-0">{{userWorkout.name}}</h5>
         <small>{{nowDate}} Days to the Workout Due Date</small>
     </div>
     <small class="text-secondary">{{userWorkout.category}}</small>
-    <p class="my-2">{{userWorkout.duaDate}}</p>
+    <p class="my-2">{{userWorkout.dueDate}}</p>
     <small class="border-end border-3 border-warning pe-1">{{userWorkout.timeCount}} times</small>
     <small>{{userWorkout.repeatCount}} sets</small>
 </a>

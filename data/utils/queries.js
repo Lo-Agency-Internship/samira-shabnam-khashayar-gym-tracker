@@ -40,11 +40,20 @@ module.exports={
         category
         ) VALUES 
         (?,?,?,?,?,?)`,
+    
 
     trainingSelect: `SELECT * FROM trainings`,
     userTrainingSelect: `SELECT * FROM trainings WHERE userId= ?`,
 
     trainingDelete: `DELETE FROM trainings WHERE id= ?`,
-
+    userTrainingUpdate:`UPDATE trainings( 
+        name, 
+        repeatCount,
+        dueDate,
+        timeCount,
+        category
+        ) VALUES 
+        (?,?,?,?,?)
+        WHERE id=?`,
     joinTrainingWithUsername: `SELECT * FROM trainings INNER JOIN users ON trainings.userId = users.id;`
 }

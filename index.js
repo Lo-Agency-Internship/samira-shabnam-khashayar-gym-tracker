@@ -90,7 +90,10 @@ app.post("/api/signup",(req,res)=>{
 });
 app.get("/workouts", (req, res) => {
     const userToken = global.cookieParser(req.headers.cookie);
+    console.log(userToken);
     const userGV = global.getId(userToken)
+    console.log(userGV);
+
     const allTrainings = db.selectTrainings().filter(training => training.userId !== userGV.id);
     let allUsers = db.selectUsers().filter(user=> user.id !== userGV.id);
     let arrUsers =[]
@@ -118,6 +121,7 @@ app.get("/modify", (req, res) => {
     const userToken = global.cookieParser(req.headers.cookie);
     const userGV = global.getId(userToken)
     const userTrainings = db.selectUserTrainings(userGV.id);
+    console.log(userTrainings);
     const nowDate=new Date()
     res.render("pages/modify",{
         userTrainings,
@@ -128,7 +132,9 @@ app.get("/modify", (req, res) => {
 
 app.post("/api/addtraining", (req, res) => {
     const training = req.body;
-    db.insertTraining(parseInt(training.userId),training.name,parseInt(training.repeatCount),training.dueDate,parseInt(training.timeCount),training.category);
+    const userToken = global.cookieParser(req.headers.cookie);
+    const userGV = global.getId(userToken)
+    db.insertTraining(userGV.id,training.name,parseInt(training.repeatCount),training.dueDate,parseInt(training.timeCount),training.category);
     res.redirect("../modify")
     
     
@@ -143,7 +149,7 @@ app.put("/api/edittraining", (req, res) => {
 app.delete("/api/deletetraining", (req, res) => {
     const training = req.body;
     db.deleteTraining(training.id);
-
+    
     res.redirect("../modify")
 });
 

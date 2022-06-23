@@ -13,7 +13,7 @@
                    {% for workout in userWorkouts %}
                         {% if user.id == workout.userId %}
                              <h5> {{workout.name}}</h5>
-                             <h6> {{workout.duaDate}}</h6>
+                             <h6> {{workout.dueDate}}</h6>
                              <p> {{workout.category}}</p>
                              <span> {{workout.repeatCount}}</span>
                              <span> {{workout.timeCount}}</span>
@@ -31,50 +31,62 @@
 
 
 {% macro editModal(userWorkout = {id:0}) %}
-<div class="modal fade" id="modal{{userWorkout.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div x-data="{userToken:'',
-                      name:'',
-                      dueDate:'',
-                      category:'',
-                      repeatCount:'',
-                      timeCount:'',
+<div  class="modal fade" id="modal{{userWorkout.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true"
+         x-data="{
+                userToken:'',
+                name:'',
+                dueDate:'',
+                category:'',
+                repeatCount:'',
+                timeCount:'',
 
-                    cookieParser(uiCookie){
-                        const cookie = uiCookie;
-                        let cookiesArr = cookie.split(";");
+
+                modalEdit(){
+
+                        const cookie = document.cookie;
+                        let cookiesArr = cookie.split(';');
                         cookiesArr = cookiesArr.map(e=>e.trim())
                         const filtered = cookiesArr.filter(el => el.startsWith('token='))
                         const userTokenArr = filtered[0].split('=');
-                        const userToken = userTokenArr[1];
-                        return userToken;
+                        const token = userTokenArr[1];
+                        
+                    const modalData={
+                        userToken:token,
+                        name:this.name,
+                        dueDate:this.dueDate,
+                        category:this.category,
+                        repeatCount:this.repeatCount,
+                        timeCount:this.timeCount
+                    }
+
+                    fetch('/api/addtraining',{
+                        method:'POST',
+                        headers:{ 'Content-type': 'application/json'},
+                        body:JSON.stringify(modalData)
+                        }).then(window.location.href='../modify')
                     },
-                    modalEdit(){
-                        const token = cookieParser(document.cookie)
-                        const modalData={
-                            userToken:token,
-                            name:this.name,
-                            dueDate:this.dueDate,
-                            category:this.category,
-                            repeatCount:this.repeatCount,
-                            timeCount:this.timeCount
-                        }
-                        fetch('/api/addtraining',{
-                            method:'POST',
-                            headers:{ 'Content-type': 'application/json'},
-                            body:JSON.stringify(modalData)
+                            modalDelete(id){
+                            console.log(id)
+                            
+                            fetch('/api/deletetraining',{
+                             method:'DELETE',
+                             headers:{'Content-type':'application/json'},
+                             body:JSON.stringify({id})
                             }).then(window.location.href='../modify')
-                        }
-
-
-
-        }" 
+                            }
+                      
+            }" 
+        >
+    <div class="modal-dialog">
+        <div 
+       
         class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Add New Workout</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
             
             <form @submit.prevent="modalEdit">
                 <div class="modal-body">
@@ -112,15 +124,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                  {% if userWorkout.id == 0 %}
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-success">Add</button>
-                  {% else %}
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-danger">Delete</button>
-                      <button type="submit" class="btn btn-warning">Edit</button>
-                 {% endif %}
+                <div 
+                    class="modal-footer">
+                        {% if userWorkout.id == 0 %}
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Add</button>
+                        {% else %}
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" @click.prevent="modalDelete({{userWorkout.id}})" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-warning">Edit</button>
+                        {% endif %}
                 </div>
             </form>
         </div>
