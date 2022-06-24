@@ -13,13 +13,27 @@
                 <div
                     x-data="{
                         logout(){
-                            
+                            const cookie = document.cookie;
+                            let cookiesArr = cookie.split(';');
+                            cookiesArr = cookiesArr.map(e=>e.trim())
+                            const filtered = cookiesArr.filter(el => el.startsWith('token='))
+                            const userTokenArr = filtered[0].split('=');
+                            const token = userTokenArr[1];
+                            document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT'
+
+
+                            fetch('/api/logout',{
+                                method:'POST',
+                                headers:{ 'Content-type': 'application/json'},
+                                body:JSON.stringify({token})
+                            })
+                            .then(window.location.href='http://localhost:3000')
                         }
 
                     }"
                     class="d-flex flex-row-reverse">
                     {% if logoutBtn == true %}
-                        <button type="button" onclick="logout()" class="btn btn-danger" onclick="logout()">
+                        <button type="button" @click.prevent="logout()" class="btn btn-danger" onclick="logout()">
                             <div class="p-1">Logout</div>
                         </button>
                     {% endif %}

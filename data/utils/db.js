@@ -69,6 +69,13 @@ module.exports={
     
         console.log(info);
     },
+    updateTraining:(name,repeat,dueDate,time,category,trainingId)=>{
+        const stmt = db.prepare(Queries.userTrainingUpdate)
+    
+        const info = stmt.run(name,repeat,dueDate,time,category,trainingId);
+    
+        console.log(info);
+    },
     selectJoinedTables:()=>{
         const stmt = db.prepare(Queries.joinTrainingWithUsername)
     
