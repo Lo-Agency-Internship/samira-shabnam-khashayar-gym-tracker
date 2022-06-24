@@ -14,16 +14,28 @@
             <!-- User's training -->
             <section>
                 <div class="d-flex justify-content-between">
-                    <h2 class="mb-2">Your Training Plan</h2>
+                    <h2 class="mb-2">Your Trainings Plan</h2>
 
                 </div>
-                <div class="card border border-primary rounded" style="width: 18rem;">
+                <div class="card border border-danger rounded" style="width: 18rem;">
                     <div class="card-body ">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
-                        <a href="./modify" class="btn btn-primary text-align-right">Edit</a>
+                        <h5 class="card-title">{{currentUser[0].name}} trainings</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {% if currentUserTrainings|length == 0 %}
+                                
+                            {% elseif currentUserTrainings|length == 1 %}
+                                {{currentUserTrainings|length}} Training Is Available
+                            {% else %}
+                                {{currentUserTrainings|length}} Trainings Are Available
+                            {% endif %}
+                        </h6>
+                        {% if currentUserTrainings|length == 0 %}
+                            <p class="card-text">There are no trainings for you right now. Please click <strong>Add</strong> to create your first training.</p>
+                            <a href="./modify" class="btn btn-warning text-align-right">Add</a>
+                        {% else %}
+                            <p class="card-text">Click <strong>Edit</strong> to preview and modify your trainings!</p>
+                            <a href="./modify" class="btn btn-warning text-align-right">Edit</a>
+                        {% endif %}
                     </div>
                 </div>
             </section>
@@ -33,11 +45,11 @@
                     <h2 class="mb-2">Other Users' Trainings</h2>
 
                     <div class="w-1 p-3">
-                        <button type="button" class="btn btn-primary px-2 py-1" data-bs-target="#otherUsersTrainings"
+                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherUsersTrainings"
                             data-bs-slide="prev">
                             <span>&#8592;</span>
                         </button>
-                        <button type="button" class="btn btn-primary px-2 py-1" data-bs-target="#otherUsersTrainings"
+                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherUsersTrainings"
                             data-bs-slide="next">
                             <span>&#8594;</span>
                         </button>
@@ -46,7 +58,7 @@
 
                 <div id="otherUsersTrainings" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for arr in arrUsers %}
+                        {% for arr in arrOfOtherUsers %}
                             <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
                                 <div class="d-block">
                                     <div class="d-flex gap-2">
@@ -54,10 +66,8 @@
                                             {{ main.card(
                                                 {   
                                                     name:user.name,
-                                                    username: user.username,
                                                     id: user.id,
-                                                },
-                                                "bye"
+                                                }
                                             )}}
                                         {% endfor %}
                                     </div>
@@ -74,11 +84,11 @@
                     <h2 class="mb-2">Other Gyms Trainings</h2>
 
                     <div class="w-1 p-3">
-                        <button type="button" class="btn btn-primary px-2 py-1" data-bs-target="#otherGymsTrainings"
+                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherGymsTrainings"
                             data-bs-slide="prev">
                             <span>&#8592;</span>
                         </button>
-                        <button type="button" class="btn btn-primary px-2 py-1" data-bs-target="#otherGymsTrainings"
+                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherGymsTrainings"
                             data-bs-slide="next">
                             <span>&#8594;</span>
                         </button>
@@ -87,7 +97,7 @@
 
                 <div id="otherGymsTrainings" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for arr in arrUsers %}
+                        {% for arr in otherGymsUsers %}
                             <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
                                 <div class="d-block">
                                     <div class="d-flex gap-2">

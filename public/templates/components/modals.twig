@@ -35,14 +35,15 @@
         aria-labelledby="staticBackdropLabel" aria-hidden="true"
         x-data="{
                 userToken:'',
-                name:'',
-                dueDate:'',
-                category:'',
-                repeatCount:'',
-                timeCount:'',
+                name:'{{userWorkout.name}}',
+                dueDate:'{{userWorkout.dueDate}}',
+                category:'{{userWorkout.category}}',
+                repeatCount:'{{userWorkout.repeatCount}}',
+                timeCount:'{{userWorkout.timeCount}}',
+                deletionState: false,
 
 
-                modalEdit(){
+                modalAdd(){
                     const cookie = document.cookie;
                     let cookiesArr = cookie.split(';');
                     cookiesArr = cookiesArr.map(e=>e.trim())
@@ -65,6 +66,10 @@
                         body:JSON.stringify(modalData)
                     })
                     .then(window.location.href='../modify')
+                },
+                deleteState(){
+                    this.deletionState = true
+
                 },
 
                 modalDelete(id){                            
@@ -103,15 +108,22 @@
             </div>
             
             
-            <form @submit.prevent="modalEdit">
+            <form @submit.prevent="modalAdd">
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">Category</label>
                         <select x-model="category" class="form-select" id="inputGroupSelect01" required>
                             <option selected disabled value="">Choose...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option value="Abs">Abs</option>
+                            <option value="Aerobic">Aerobic</option>
+                            <option value="Back">Back</option>
+                            <option value="Biceps">Biceps</option>
+                            <option value="Cardio">Cardio</option>
+                            <option value="Chest">Chest</option>
+                            <option value="Leg">Leg</option>
+                            <option value="Shoulders">Shoulders</option>
+                            <option value="Triceps">Triceps</option>
+                            <option value="Others">Others</option>
                         </select>
                     </div>
                     <div class="input-group mb-3">
@@ -121,13 +133,14 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input x-model="repeatCount" type="number" class="form-control" placeholder="Repeats" aria-label="Repeats"
-                                min="0" required value={{userWorkout.repeatCount}}>
-                        </div>
-                        <div class="col">
                             <input x-model="timeCount"  type="number" class="form-control" placeholder="Sets" aria-label="Sets"
                                 min="0" required value={{userWorkout.timeCount}}>
                         </div>
+                        <div class="col">
+                            <input x-model="repeatCount" type="number" class="form-control" placeholder="Repeats" aria-label="Repeats"
+                                min="0" required value={{userWorkout.repeatCount}}>
+                        </div>
+                        
                     </div>
                     <div class="row g-2 my-2">
                         <div class="col-md">
@@ -146,9 +159,13 @@
                             <button type="submit" class="btn btn-success">Add</button>
                         {% else %}
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" @click.prevent="modalDelete({{userWorkout.id}})" class="btn btn-danger">Delete</button>
+                            <button type="button" @click.prevent="deleteState" class="btn btn-danger">Delete</button>
                             <button type="button" @click.prevent="modalEdit({{userWorkout.id}})" class="btn btn-warning">Edit</button>
                         {% endif %}
+                </div>
+                <div x-show="deletionState" class="py-2 px-4">
+                    <span>Are you sure about deleting this training?</span>
+                    <button type="button" @click.prevent="modalDelete({{userWorkout.id}})" class="btn btn-danger">Yes</button>
                 </div>
             </form>
         </div>
