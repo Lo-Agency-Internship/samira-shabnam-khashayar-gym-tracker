@@ -75,12 +75,5 @@ module.exports={
         const info = stmt.run(name,repeat,dueDate,time,category,trainingId);
     
         console.log(info);
-    },
-    selectJoinedTables:()=>{
-        const stmt = db.prepare(Queries.joinTrainingWithUsername)
-    
-        const joinedTables = stmt.all();
-    
-        return joinedTables
     }
 }

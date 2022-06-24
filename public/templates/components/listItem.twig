@@ -1,9 +1,24 @@
-{% macro list(userWorkout,nowDate) %}
+{% macro list(userWorkout) %}
 <a  href="" class="list-group-item list-group-item-action" aria-current="true" data-bs-toggle="modal"
     data-bs-target="#modal{{userWorkout.id}}">
     <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-0">{{userWorkout.name}}</h5>
-        <small>{{nowDate}} Days to the Workout Due Date</small>
+
+        {% if userWorkout.remaining < 0 %}
+            <small class="text-danger">{{userWorkout.remaining}} days have passed from the Workout DueDate</small>
+        {% elseif userWorkout.remaining == 0 %}
+            <small class="text-warning">Today is the Wrokout DueDate</small>
+        {% elseif userWorkout.remaining <= 7 %}
+            {% if userWorkout.remaining == 1 %}
+                <small class="text-success">{{userWorkout.remaining}} day to the Workout Due Date</small>
+            {% else %}
+                <small class="text-success">{{userWorkout.remaining}} days to the Workout Due Date</small>
+            {% endif %}
+        {% else %}
+            <small class="text-secondary">{{userWorkout.remaining}} days left to the Workout Due Date</small>
+        {% endif %}
+
+
     </div>
     <small class="text-secondary">{{userWorkout.category}}</small>
     <p class="my-2">{{userWorkout.dueDate}}</p>

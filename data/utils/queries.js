@@ -50,7 +50,5 @@ module.exports={
 
     trainingDelete: `DELETE FROM trainings WHERE id= ?`,
 
-    userTrainingUpdate:`UPDATE trainings SET name = ?, repeatCount = ?, dueDate = ?, timeCount = ?, category = ? WHERE id=?`,
-    
-    joinTrainingWithUsername: `SELECT * FROM trainings INNER JOIN users ON trainings.userId = users.id;`
+    userTrainingUpdate:`UPDATE trainings SET name = ?, repeatCount = ?, dueDate = ?, timeCount = ?, category = ? WHERE id=?`
 }

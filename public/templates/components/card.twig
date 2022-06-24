@@ -1,12 +1,11 @@
 
-{% macro card(user, userTrainingCount) %}
+{% macro card(user) %}
  
 <div class="card" style="width: 18rem;">
     <div class="card-body">
         <h5 class="card-title">{{user.name}} Trainings </h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{user.username}}</h6>
-        <p class="card-text">{{userTrainingCount}}</p>
-        <button  class="btn btn-primary text-align-right" type="button"
+        <p class="card-text">Click preview button to preview <strong>{{user.name}}</strong> workouts!</p>
+        <button  class="btn btn-warning text-align-right" type="button"
          data-bs-toggle="modal" data-bs-target="#modal{{user.id}}">Preview</button>
     </div>
 </div>

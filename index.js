@@ -4,7 +4,8 @@ const path = require("path");
 const db = require("./data/utils/db.js");
 const crypto = require("crypto");
 const axios = require("axios").default;
-const global = require("./utils.js")
+const global = require("./utils.js");
+const { response } = require("express");
 
 const app = express();
 app.use(express.json());
@@ -32,7 +33,7 @@ app.get("/", (req, res) => {
 app.post("/api/login",(req,res)=>{
     //validation
     const userLogin=req.body;
-    const dbUser=db.findUser(userLogin.email)
+    const dbUser=db.findUser(userLogin.email.trim().toLowerCase())
     if(dbUser===undefined){
         //send error to ui
         
@@ -67,7 +68,7 @@ app.post("/api/signup",(req,res)=>{
             const salt = crypto.randomBytes(16).toString('hex');
             const hash = crypto.pbkdf2Sync(person.pass, salt, 1000, 64, `sha512`).toString(`hex`);
             // inserting the user into user table
-            db.insertUser(person.name,person.email,hash,salt);
+            db.insertUser(person.name,person.email.trim().toLowerCase(),hash,salt);
             const user = db.findUser(person.email);
             const id = user.id;
             const token = crypto.randomBytes(16).toString('hex');
@@ -90,37 +91,75 @@ app.post("/api/signup",(req,res)=>{
 });
 app.get("/workouts", (req, res) => {
     const userToken = global.cookieParser(req.headers.cookie);
-    const userGV = global.getId(userToken)
+    const userGV = global.getId(userToken);
 
-    const allTrainings = db.selectTrainings().filter(training => training.userId !== userGV.id);
-    let allUsers = db.selectUsers().filter(user=> user.id !== userGV.id);
-    let arrUsers =[]
+    const allTrainings = db.selectTrainings()
+    const allUsers = db.selectUsers()
+
+    const currentUser = allUsers.filter(user=> user.id === userGV.id);
+    const currentUserTrainings = allTrainings.filter(training => training.userId === userGV.id)
+    const otherUsers = allUsers.filter(user=> user.id !== userGV.id);
+    const otherUsersTrainings = allTrainings.filter(training => training.userId !== userGV.id)
+
+    
+    let arrOfOtherUsers =[]
     let temp = [];
     
-    allUsers.forEach((user,idx)=>{
+    otherUsers.forEach((user,idx)=>{
         temp.push(user);
         if(temp.length === 4 || idx+1 === allUsers.length) {
-            arrUsers.push(temp);
+            arrOfOtherUsers.push(temp);
             temp = [];
         }
     })
-    const otherTrainings = [];    
-    res.render("pages/workouts",{
+
+    let otherGym1Data = []
+    axios.get("https://b304-113-203-87-189.eu.ngrok.io/api/ourgym")
+            .then(response=>{
+                otherGym1Data = response.data;
+            }) 
+    
+    let otherGymsUsers =[]
+    let otherGymsWorkouts =[]
+
+    otherGymsUsers = otherGym1Data.map(datum=>{
+        return [...otherGymsUsers, {'username':datum.personName}]
+    })
+
+    otherGymsWorkouts = otherGym1Data.map(datum=>{
         
-        arrUsers,
-        allTrainings,
-        otherTrainings
+        return [...otherGymsWorkouts, ]
+    })
+
+
+
+
+
+
+    res.render("pages/workouts",{
+        currentUser,
+        currentUserTrainings,
+        arrOfOtherUsers,
+        otherUsersTrainings,
+        otherGymsUsers,
+        otherGymsWorkouts
+
     })
 });
 
 app.get("/modify", (req, res) => {
     const userToken = global.cookieParser(req.headers.cookie);
     const userGV = global.getId(userToken)
-    const userTrainings = db.selectUserTrainings(userGV.id);
-    const nowDate=new Date()
+    let userTrainings = db.selectUserTrainings(userGV.id);
+    const nowDate=new Date().getDate();
+    userTrainings = userTrainings.map(training=> {
+
+        const due = new Date(training.dueDate)
+        training = {...training, 'remaining':Math.abs(due.getDate() - nowDate)};
+        return training
+    })
     res.render("pages/modify",{
-        userTrainings,
-        nowDate
+        userTrainings
     })
     
 });
@@ -156,15 +195,18 @@ app.post("/api/logout", (req, res) => {
 });
 
 app.get("/api/trainings", (req, res) => {
-    // let allTrainings = db.selectTrainings();
-    // const users = db.selectUsers();
-    // const usersName = users.map(user=> {user.id, user.name});
-    // allTrainings = allTrainings.map(training=>{
-    //     return training.userId = usersName.find(user=> user.id === training.userId).name
-    // })
-    let allTrainings = db.selectJoinedTables();
+    let allTrainings = db.selectTrainings();
+    const users = db.selectUsers();
+    const usersName = users.map(user=>{
+        return {id:user.id, name:user.name}
+    });
+    allTrainings = allTrainings.map(training=>{
+        const user = usersName.find(user=> user.id === training.userId);
+        delete training.id;
+        delete training.userId;
+        return training = {...training,'username' : user.name}
+    })
     res.json(allTrainings);
-
 });
 
 
