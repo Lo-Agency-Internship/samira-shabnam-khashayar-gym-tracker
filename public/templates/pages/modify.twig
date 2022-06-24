@@ -32,24 +32,27 @@
         </div>
         {% for training in userTrainings %}
 
-        <div class="list-group">
-            {{listitem.list({ 
-            id:training.id,
-            name:training.name,
-            category:training.category,
-            repeatCount:training.repeatCount,
-            timeCount:training.timeCount,
-            dueDate:training.dueDate
-            } ,nowDate)}}
+            <div class="list-group">
+                {{listitem.list({ 
+                    id:training.id,
+                    name:training.name,
+                    category:training.category,
+                    repeatCount:training.repeatCount,
+                    timeCount:training.timeCount,
+                    dueDate:training.dueDate
+                },
+                nowDate)}}
             </div>
+        {% endfor %}
+        {% for training in userTrainings %}
             {{modals.editModal({
-                 id:training.id,
-                 name:training.name,
+                id:training.id,
+                name:training.name,
                 repeatCount:training.repeatCount,
                 timeCount:training.timeCount,
                 dueDate:training.dueDate,
-            }
-            )}}
-           {% endfor %}
+            })}}
+        {% endfor %}
+
     </main>
 {% endblock %}

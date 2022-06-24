@@ -90,9 +90,7 @@ app.post("/api/signup",(req,res)=>{
 });
 app.get("/workouts", (req, res) => {
     const userToken = global.cookieParser(req.headers.cookie);
-    console.log(userToken);
     const userGV = global.getId(userToken)
-    console.log(userGV);
 
     const allTrainings = db.selectTrainings().filter(training => training.userId !== userGV.id);
     let allUsers = db.selectUsers().filter(user=> user.id !== userGV.id);
@@ -101,10 +99,8 @@ app.get("/workouts", (req, res) => {
     
     allUsers.forEach((user,idx)=>{
         temp.push(user);
-        // console.log(temp);
         if(temp.length === 4 || idx+1 === allUsers.length) {
             arrUsers.push(temp);
-            // console.log("helia");
             temp = [];
         }
     })
@@ -121,7 +117,6 @@ app.get("/modify", (req, res) => {
     const userToken = global.cookieParser(req.headers.cookie);
     const userGV = global.getId(userToken)
     const userTrainings = db.selectUserTrainings(userGV.id);
-    console.log(userTrainings);
     const nowDate=new Date()
     res.render("pages/modify",{
         userTrainings,
@@ -142,7 +137,7 @@ app.post("/api/addtraining", (req, res) => {
 
 app.put("/api/edittraining", (req, res) => {
     const training = req.body;
-    const userTrainings = db.selectUserTrainings(training.id);
+    db.updateTraining(training.name,parseInt(training.repeatCount),training.dueDate,parseInt(training.timeCount),training.category,training.trainingId);
     res.redirect("../modify")
 });
 
@@ -151,6 +146,13 @@ app.delete("/api/deletetraining", (req, res) => {
     db.deleteTraining(training.id);
     
     res.redirect("../modify")
+});
+
+app.post("/api/logout", (req, res) => {
+    const userToken = req.body
+    const userGV = global.getId(userToken)
+    global.clearUser(userGV)    
+    res.redirect("http://localhost:3000")
 });
 
 app.get("/api/trainings", (req, res) => {

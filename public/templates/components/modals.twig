@@ -33,7 +33,7 @@
 {% macro editModal(userWorkout = {id:0}) %}
 <div  class="modal fade" id="modal{{userWorkout.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true"
-         x-data="{
+        x-data="{
                 userToken:'',
                 name:'',
                 dueDate:'',
@@ -43,13 +43,12 @@
 
 
                 modalEdit(){
-
-                        const cookie = document.cookie;
-                        let cookiesArr = cookie.split(';');
-                        cookiesArr = cookiesArr.map(e=>e.trim())
-                        const filtered = cookiesArr.filter(el => el.startsWith('token='))
-                        const userTokenArr = filtered[0].split('=');
-                        const token = userTokenArr[1];
+                    const cookie = document.cookie;
+                    let cookiesArr = cookie.split(';');
+                    cookiesArr = cookiesArr.map(e=>e.trim())
+                    const filtered = cookiesArr.filter(el => el.startsWith('token='))
+                    const userTokenArr = filtered[0].split('=');
+                    const token = userTokenArr[1];
                         
                     const modalData={
                         userToken:token,
@@ -64,26 +63,42 @@
                         method:'POST',
                         headers:{ 'Content-type': 'application/json'},
                         body:JSON.stringify(modalData)
-                        }).then(window.location.href='../modify')
-                    },
-                            modalDelete(id){
-                            console.log(id)
-                            
-                            fetch('/api/deletetraining',{
-                             method:'DELETE',
-                             headers:{'Content-type':'application/json'},
-                             body:JSON.stringify({id})
-                            }).then(window.location.href='../modify')
-                            }
+                    })
+                    .then(window.location.href='../modify')
+                },
+
+                modalDelete(id){                            
+                    fetch('/api/deletetraining',{
+                        method:'DELETE',
+                        headers:{'Content-type':'application/json'},
+                        body:JSON.stringify({id})
+                    }).then(window.location.href='../modify')
+                },
+
+                modalEdit(id){
+                    const modalData={
+                        name:this.name,
+                        dueDate:this.dueDate,
+                        category:this.category,
+                        repeatCount:this.repeatCount,
+                        timeCount:this.timeCount,
+                        trainingId: id
+                    }                           
+                    fetch('/api/edittraining',{
+                        method:'PUT',
+                        headers:{'Content-type':'application/json'},
+                        body:JSON.stringify(modalData)
+                    }).then(window.location.href='../modify')
+                }
                       
-            }" 
+        }" 
         >
     <div class="modal-dialog">
         <div 
        
         class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Add New Workout</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">{% if userWorkout.id == 0  %} Add New Workout {% else %} Edit Workout {% endif %}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
@@ -132,7 +147,7 @@
                         {% else %}
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" @click.prevent="modalDelete({{userWorkout.id}})" class="btn btn-danger">Delete</button>
-                            <button type="submit" class="btn btn-warning">Edit</button>
+                            <button type="button" @click.prevent="modalEdit({{userWorkout.id}})" class="btn btn-warning">Edit</button>
                         {% endif %}
                 </div>
             </form>

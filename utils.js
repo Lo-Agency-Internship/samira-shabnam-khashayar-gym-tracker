@@ -23,8 +23,8 @@ module.exports={
         return usersId.find(obj=> obj.token === token)
     },
 
-    clear: ()=>{
-        usersId = []
+    clearUser: (id)=>{
+        usersId = usersId.filter(user=> user.id !== id)
         return
     }
 

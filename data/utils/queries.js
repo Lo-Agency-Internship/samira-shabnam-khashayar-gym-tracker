@@ -17,7 +17,9 @@ module.exports={
         (?,?,?,?)`,
 
     userSelect: `SELECT * FROM users`,
+
     userFind: `SELECT * FROM users WHERE username = ?`,
+    
     saltGet: `SELECT salt FROM users WHERE username =?`,
 
 
@@ -43,17 +45,12 @@ module.exports={
     
 
     trainingSelect: `SELECT * FROM trainings`,
+
     userTrainingSelect: `SELECT * FROM trainings WHERE userId= ?`,
 
     trainingDelete: `DELETE FROM trainings WHERE id= ?`,
-    userTrainingUpdate:`UPDATE trainings( 
-        name, 
-        repeatCount,
-        dueDate,
-        timeCount,
-        category
-        ) VALUES 
-        (?,?,?,?,?)
-        WHERE id=?`,
+
+    userTrainingUpdate:`UPDATE trainings SET name = ?, repeatCount = ?, dueDate = ?, timeCount = ?, category = ? WHERE id=?`,
+    
     joinTrainingWithUsername: `SELECT * FROM trainings INNER JOIN users ON trainings.userId = users.id;`
 }
