@@ -97,18 +97,16 @@
 
                 <div id="otherGymsTrainings" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for arr in otherGymsUsers %}
+                        {% for arr in arrOfOtherGymUsers1 %}
                             <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
                                 <div class="d-block">
                                     <div class="d-flex gap-2">
                                         {% for user in arr %}
                                             {{ main.card(
                                                 {   
-                                                    name:user.name,
-                                                    username: user.username,
-                                                    id: user.id,
-                                                },
-                                                "bye"
+                                                    name:user.username,
+                                                    id:user.username
+                                                }
                                             )}}
                                         {% endfor %}
                                     </div>
@@ -120,7 +118,11 @@
             </section>
             <!-- modals -->
         {#{% include "../components/modalPreview.twig" %}#}
-
+        {% for arr in arrOfOtherUsers %}
+            {% for user in arr %}
+                {{modals.previewModal(user,otherUsersTrainings)}}
+            {% endfor %}
+        {% endfor %}
         </main>
     </div>
 {% endblock %}

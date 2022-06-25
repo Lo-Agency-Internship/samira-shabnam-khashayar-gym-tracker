@@ -89,7 +89,9 @@ app.post("/api/signup",(req,res)=>{
     
 
 });
-app.get("/workouts", (req, res) => {
+
+app.get("/workouts", async (req, res) => {
+    
     const userToken = global.cookieParser(req.headers.cookie);
     const userGV = global.getId(userToken);
 
@@ -99,6 +101,7 @@ app.get("/workouts", (req, res) => {
     const currentUser = allUsers.filter(user=> user.id === userGV.id);
     const currentUserTrainings = allTrainings.filter(training => training.userId === userGV.id)
     const otherUsers = allUsers.filter(user=> user.id !== userGV.id);
+    console.log(allTrainings);
     const otherUsersTrainings = allTrainings.filter(training => training.userId !== userGV.id)
 
     
@@ -113,36 +116,94 @@ app.get("/workouts", (req, res) => {
         }
     })
 
+
+
     // let otherGym1Data = []
-    // axios.get("https://b304-113-203-87-189.eu.ngrok.io/api/ourgym")
-    //         .then(response=>{
-    //             otherGym1Data = response.data;
-    //         }) 
+
+    // await axios.get("https://785d-151-240-107-26.eu.ngrok.io/api/ourgym")
+    // .then(response=>{
+    //     otherGym1Data = response.data;
+    // }).catch()
+
     
-    // let otherGymsUsers =[]
-    // let otherGymsWorkouts =[]
 
-    // otherGymsUsers = otherGym1Data.map(datum=>{
-    //     return [...otherGymsUsers, {'username':datum.personName}]
+    // let otherGymsUsers1 =[]
+    // let otherGymsWorkouts1 =[]
+
+
+    // otherGym1Data.forEach(obj=>{
+    //     const user = {'username':obj.personName,'gym': "ShaPouFarEhsan Gym"};
+    //     if(!otherGymsUsers1.find(obj=>obj.username === user.username)){
+    //         otherGymsUsers1.push(user)
+    //     }   
     // })
 
-    // otherGymsWorkouts = otherGym1Data.map(datum=>{
-        
-    //     return [...otherGymsWorkouts, ]
+
+    // otherGymsWorkouts1 = otherGym1Data.map(obj=>{
+    //     return obj
+    // })
+
+    // let arrOfOtherGymUsers1 =[]
+    // let tempOther1 = [];
+    
+    // otherGymsUsers1.forEach((user,idx)=>{
+    //     tempOther1.push(user);
+    //     if(tempOther1.length === 4 || idx+1 === otherGymsUsers1.length) {
+    //         arrOfOtherGymUsers1.push(tempOther1);
+    //         tempOther1 = [];
+    //     }
     // })
 
 
 
 
+    // let otherGym2Data = []
+    // axios.get("https://b304-113-203-87-189.eu.ngrok.io/api/ourgym")
+    //     .then(response=>{
+    //         otherGym2Data = response.data;
+    //     }) 
+    
+    // let otherGymsUsers2 =[]
+    // let otherGymsWorkouts2 =[]
 
+    // otherGymsUsers2 = otherGym2Data.map(obj=>{
+    //     return [...otherGymsUsers2, {'username':obj.personName,'gym': "ShaPouFarEhsan Gym"}]
+    // })
+    // otherGymsUsers2 = new Set(otherGymsUsers2);
+
+    // otherGymsWorkouts2 = otherGym2Data.map(obj=>{
+    //     return obj
+    // })
+
+    // let arrOfOtherGymUsers2 =[]
+    // let tempOther2 = [];
+    
+    // otherGymsUsers2.forEach((user,idx)=>{
+    //     tempOther2.push(user);
+    //     if(tempOther2.length === 4 || idx+1 === otherGymsUsers2.length) {
+    //         arrOfOtherGymUsers2.push(tempOther2);
+    //         tempOther2 = [];
+    //     }
+    // })
+
+
+
+    console.log(otherUsersTrainings);
 
     res.render("pages/workouts",{
         currentUser,
         currentUserTrainings,
+
         arrOfOtherUsers,
         otherUsersTrainings
-        //otherGymsUsers,
-        //otherGymsWorkouts
+
+
+        // otherGymsWorkouts1,
+        // arrOfOtherGymUsers1
+
+
+        // otherGymsWorkouts2,
+        // arrOfOtherGymUsers2
 
     })
 });
@@ -162,6 +223,11 @@ app.get("/modify", (req, res) => {
         userTrainings
     })
     
+});
+
+
+app.get("/nojavascript", (req, res) => {
+    res.render("pages/noJS")
 });
 
 app.post("/api/addtraining", (req, res) => {
