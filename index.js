@@ -113,23 +113,23 @@ app.get("/workouts", (req, res) => {
         }
     })
 
-    let otherGym1Data = []
-    axios.get("https://b304-113-203-87-189.eu.ngrok.io/api/ourgym")
-            .then(response=>{
-                otherGym1Data = response.data;
-            }) 
+    // let otherGym1Data = []
+    // axios.get("https://b304-113-203-87-189.eu.ngrok.io/api/ourgym")
+    //         .then(response=>{
+    //             otherGym1Data = response.data;
+    //         }) 
     
-    let otherGymsUsers =[]
-    let otherGymsWorkouts =[]
+    // let otherGymsUsers =[]
+    // let otherGymsWorkouts =[]
 
-    otherGymsUsers = otherGym1Data.map(datum=>{
-        return [...otherGymsUsers, {'username':datum.personName}]
-    })
+    // otherGymsUsers = otherGym1Data.map(datum=>{
+    //     return [...otherGymsUsers, {'username':datum.personName}]
+    // })
 
-    otherGymsWorkouts = otherGym1Data.map(datum=>{
+    // otherGymsWorkouts = otherGym1Data.map(datum=>{
         
-        return [...otherGymsWorkouts, ]
-    })
+    //     return [...otherGymsWorkouts, ]
+    // })
 
 
 
@@ -140,9 +140,9 @@ app.get("/workouts", (req, res) => {
         currentUser,
         currentUserTrainings,
         arrOfOtherUsers,
-        otherUsersTrainings,
-        otherGymsUsers,
-        otherGymsWorkouts
+        otherUsersTrainings
+        //otherGymsUsers,
+        //otherGymsWorkouts
 
     })
 });
