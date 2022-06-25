@@ -24,7 +24,64 @@
     <main class="container my-5">
         <div class="d-flex justify-content-between">
                 <h2 class="mb-2">Workouts list</h2>
-
+                   <!-- filter by date -->        
+                <div x-data="{
+                    start:'',
+                    end:'',
+                    daily:'',
+                    allTraining(){
+                        fetch('',{
+                            method:'GET',
+                            headers:{'Content-type':'application/json'}
+                        })
+                    },
+                    dailyFilter(){
+                        fetch('',{
+                            method:'POST',
+                            headers:{'Content-type':'application/json'},
+                            body:JSON.stringify({'daily':this.daily})
+                        })
+                    },
+                    filterSpan(){
+                        fetch('',{
+                            method:'POST',
+                            headers:{'Content-type':'application/json'},
+                            body:JSON.stringify({'start':this.start,'end':this.end})
+                        })
+                    }
+                }"
+                class="btn-group gap-2" role="group" aria-label="Button group with nested dropdown" >
+                    <button type="button" @click.prevent="allTraining" class="btn btn-primary">all</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button"  class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            daily
+                        </button>
+                        <form @submit.prevent="dailyFilter" class="dropdown-menu p-4">
+                            <div class="mb-3">
+                                <label for="exampleDropdownFormEmail2" class="form-label">select date</label>
+                                <input x-model="daily" type="date" class="form-control" id="exampleDropdownFormDate">
+                            </div>
+                            <button type="submit" class="btn btn-primary">filter</button>
+                        </form>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                        </button>
+                        <form @submit.prevent="filterSpan" class="dropdown-menu p-4">
+                            <div class="mb-3">
+                                <label for="exampleDropdownFormEmail2" class="form-label">start</label>
+                                <input x-model="start" type="date" class="form-control" id="exampleDropdownFormDate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleDropdownFormPassword2" class="form-label">end</label>
+                                <input x-model="end" type="date" class="form-control" id="exampleDropdownFormDate">
+                            </div>
+                    
+                            <button type="submit" class="btn btn-primary">filter</button>
+                        </form>
+                    </div>
+                </div>
                 <!-- Button trigger add modal -->
                 <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modal0">
                     Add Workout
