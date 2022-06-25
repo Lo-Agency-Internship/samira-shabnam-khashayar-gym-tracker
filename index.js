@@ -197,7 +197,7 @@ app.post("/modify",(req,res)=>{
         })
         console.log(userTrainings)
     }
-    res.json(JSON.stringify(userTrainings))
+    res.json({data:userTrainings})
 
 })
 

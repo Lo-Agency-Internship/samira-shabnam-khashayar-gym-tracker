@@ -35,11 +35,33 @@
                             headers:{'Content-type':'application/json'}
                         })
                     },
-                    dailyFilter(){
+                     dailyFilter(){
                         fetch('',{
                             method:'POST',
                             headers:{'Content-type':'application/json'},
                             body:JSON.stringify({'daily':this.daily})
+                        }).then(async(response)=>{
+                           {# response.json(res=>console.log(res))#}
+                           const data=await response.json()
+                           console.log(data)
+
+                           const div = document.querySelector('#list-parent')
+                           const child = document.createElement('div')
+                           div.innerHtml=''
+                           data.data.forEach(item => {
+                            child.innerHtml=`
+                            <a  href='' class='list-group-item list-group-item-action' aria-current='true' data-bs-toggle='modal'
+                          data-bs-target='#modal${item.id}'>
+                             <div class='d-flex w-100 justify-content-between'>
+                             <h5 class='mb-0'>${item.name}</h5>
+                              </div>
+                              <small class='text-secondary'>${item.category}</small>
+                               <p class='my-2'>${item.dueDate}</p>
+                              <small class='border-end border-3 border-warning pe-1'>${item.timeCount} times</small>
+                               <small>${item.repeatCount} sets</small>
+                              </a
+                              div.appendChild(child)`
+                           })
                         })
                     },
                     filterSpan(){
@@ -87,6 +109,7 @@
                     Add Workout
                 </button>
         </div>
+        <div id="list-parent">
         {% for training in userTrainings %}
 
             <div class="list-group">
@@ -101,6 +124,7 @@
                 })}}
             </div>
         {% endfor %}
+        </div>
         {% for training in userTrainings %}
             {{modals.editModal({
                 id:training.id,
