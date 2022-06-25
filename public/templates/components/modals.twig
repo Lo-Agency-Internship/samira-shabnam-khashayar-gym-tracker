@@ -6,26 +6,36 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{user.username}} Trainings</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{user.name}} Trainings</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                   {% for workout in userWorkouts %}
-                        {% if user.id == workout.userId %}
-                             <h5> {{workout.name}}</h5>
-                             <h6> {{workout.dueDate}}</h6>
-                             <p> {{workout.category}}</p>
-                             <span> {{workout.repeatCount}}</span>
-                             <span> {{workout.timeCount}}</span>
+                    <ul class="list-group list-group-flush">
+                        {% if userWorkouts|length == 0 %}
+                            <li class="list-group-item">
+                                <p>There are no workouts for this user!</p>
+                            </li>
+                        {% else %}
+                            {% for workout in userWorkouts %}
+                                {% if user.id == workout.userId %}
+                                    <li class="list-group-item">
+                                        <h5>{{workout.name}}</h5>
+                                        <h6>{{workout.dueDate}}</h6>
+                                        <p>{{workout.category}}</p>
+                                        <span>{{workout.repeatCount}}</span>
+                                        <span>{{workout.timeCount}}</span>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
-                   {% endfor %}
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="#exampleModal">Close</button>
                 </div>
             </div>
         </div>
-    </div
+    </div>
 </div>
 {% endmacro %}
 

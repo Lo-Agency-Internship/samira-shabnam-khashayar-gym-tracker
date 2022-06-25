@@ -118,10 +118,10 @@
             </section>
             <!-- modals -->
         {#{% include "../components/modalPreview.twig" %}#}
-        {% for arr in arrOfOtherUsers %}
-            {% for user in arr %}
+        {% for user in otherUsers %}
+            <div>
                 {{modals.previewModal(user,otherUsersTrainings)}}
-            {% endfor %}
+            </div>
         {% endfor %}
         </main>
     </div>

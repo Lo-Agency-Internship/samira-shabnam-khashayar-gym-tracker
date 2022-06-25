@@ -97,11 +97,11 @@ app.get("/workouts", async (req, res) => {
 
     const allTrainings = db.selectTrainings()
     const allUsers = db.selectUsers()
+    console.log(allTrainings);
 
     const currentUser = allUsers.filter(user=> user.id === userGV.id);
     const currentUserTrainings = allTrainings.filter(training => training.userId === userGV.id)
     const otherUsers = allUsers.filter(user=> user.id !== userGV.id);
-    console.log(allTrainings);
     const otherUsersTrainings = allTrainings.filter(training => training.userId !== userGV.id)
 
     
@@ -186,16 +186,17 @@ app.get("/workouts", async (req, res) => {
     //     }
     // })
 
-
-
     console.log(otherUsersTrainings);
+    console.log(otherUsers);
+
 
     res.render("pages/workouts",{
         currentUser,
         currentUserTrainings,
 
         arrOfOtherUsers,
-        otherUsersTrainings
+        otherUsersTrainings,
+        otherUsers
 
 
         // otherGymsWorkouts1,
@@ -233,12 +234,11 @@ app.post("/modify",(req,res)=>{
     
     if(filter.hasOwnProperty("end")){
         let dueDate,start,end;
-        userTrainings=userTrainings.map(training=>{
+        userTrainings=userTrainings.filter(training=>{
             dueDate=training.dueDate.split("-").join("");
             start=filter.start.split("-").join("");
             end=filter.end.split("-").join("");
-            if(dueDate>start && dueDate<end){
-                console.log(training)
+            if(dueDate>=start && dueDate<=end){
                 return training;
             }
         })
@@ -249,14 +249,10 @@ app.post("/modify",(req,res)=>{
         userTrainings=userTrainings.filter(training=>{
             dueDate=training.dueDate;
             daily=filter.daily
-            console.log(daily)
-            console.log(dueDate)
             if(daily===dueDate){
-                console.log(training)
                 return training
             }
         })
-        console.log(userTrainings)
     }
     res.json({data:userTrainings})
 
