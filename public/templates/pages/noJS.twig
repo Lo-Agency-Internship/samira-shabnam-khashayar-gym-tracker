@@ -1,0 +1,24 @@
+{% extends "../components/html.twig"%}
+{% import "../components/navbar.twig" as nav %}
+{% block title %}No JavaScript!{% endblock %}
+
+{% block navbar %}
+{{nav.navbar()}}
+{% endblock %}
+{% block content %}
+    {#{% include "../components/navbar.twig" %}#}
+    <main class="container mt-5">
+        <div class="d-flex align-items-center justify-content-center">
+            <div class="text-center">
+                <h1 class="display-1 fw-bold">No JavaScript!</h1>
+                <p class="fs-3"> <span class="text-danger">Opps!</span> Your browser doesn't support JavaScript.</p>
+                <p class="lead">
+                    Or your browser's JavaScript is disabled. Please make sure it's active!
+                </p>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+{{ parent() }}
+{% endblock %}
