@@ -219,11 +219,48 @@ app.get("/modify", (req, res) => {
         training = {...training, 'remaining':Math.abs(due.getDate() - nowDate)};
         return training
     })
+    
     res.render("pages/modify",{
         userTrainings
     })
     
 });
+app.post("/modify",(req,res)=>{
+    const filter=req.body;
+    const userToken = global.cookieParser(req.headers.cookie);
+    const userGV = global.getId(userToken)
+    let userTrainings = db.selectUserTrainings(userGV.id);
+    
+    if(filter.hasOwnProperty("end")){
+        let dueDate,start,end;
+        userTrainings=userTrainings.map(training=>{
+            dueDate=training.dueDate.split("-").join("");
+            start=filter.start.split("-").join("");
+            end=filter.end.split("-").join("");
+            if(dueDate>start && dueDate<end){
+                console.log(training)
+                return training;
+            }
+        })
+        
+    }
+    else{
+        let dueDate,daily;
+        userTrainings=userTrainings.filter(training=>{
+            dueDate=training.dueDate;
+            daily=filter.daily
+            console.log(daily)
+            console.log(dueDate)
+            if(daily===dueDate){
+                console.log(training)
+                return training
+            }
+        })
+        console.log(userTrainings)
+    }
+    res.json({data:userTrainings})
+
+})
 
 
 app.get("/nojavascript", (req, res) => {
@@ -274,6 +311,7 @@ app.get("/api/trainings", (req, res) => {
     })
     res.json(allTrainings);
 });
+
 
 
 // serving not found urls
