@@ -61,7 +61,7 @@ app.post("/api/login",(req,res)=>{
 
 app.post("/api/signup",(req,res)=>{
     const person = req.body;
-    if(person.pass === person.pass2){
+    // if(person.pass === person.pass2){
         const user = db.findUser(person.email);
         if(user === undefined){
             // hashing process
@@ -79,12 +79,12 @@ app.post("/api/signup",(req,res)=>{
             // err to ui about exists email
             res.setHeader("err", "exists").end();
         }
-    }
-    else{
-        // err to ui about not same
-        res.setHeader("err", "notMatched").end();
+    // }
+    // else{
+    //     // err to ui about not same
+    //     res.setHeader("err", "notMatched").end();
         
-    }
+    // }
     // validation
     
 
