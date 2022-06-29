@@ -131,21 +131,24 @@
                 </button>
         </div>
         <div id="list-parent" class="pb-5">
-        
-        {% for training in userTrainings %}
+            {% if userTrainings|length != 0%}
+                {% for training in userTrainings %}
 
-            <div class="list-group">
-                {{listitem.list({ 
-                    id:training.id,
-                    name:training.name,
-                    category:training.category,
-                    repeatCount:training.repeatCount,
-                    timeCount:training.timeCount,
-                    dueDate:training.dueDate,
-                    remaining:training.remaining
-                })}}
-            </div>
-        {% endfor %}
+                    <div class="list-group">
+                        {{listitem.list({ 
+                            id:training.id,
+                            name:training.name,
+                            category:training.category,
+                            repeatCount:training.repeatCount,
+                            timeCount:training.timeCount,
+                            dueDate:training.dueDate,
+                            remaining:training.remaining
+                        })}}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>There are no trainings for you! Please add a new workout.</p>
+            {% endif %}
         </div>
         {% for training in userTrainings %}
             {{modals.editModal({
