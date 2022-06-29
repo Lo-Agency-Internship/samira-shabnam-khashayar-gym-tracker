@@ -41,78 +41,91 @@
             </section>
             <!-- Other users' trainings -->
             <section class="my-5">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between border-bottom">
                     <h2 class="mb-2">Other Users' Trainings</h2>
 
-                    <div class="w-1 p-3">
-                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherUsersTrainings"
-                            data-bs-slide="prev">
-                            <span>&#8592;</span>
-                        </button>
-                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherUsersTrainings"
-                            data-bs-slide="next">
-                            <span>&#8594;</span>
-                        </button>
-                    </div>
+                    {% if arrOfOtherUsers|length > 1 %}
+                        <div class="w-1 p-3">
+                            <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherUsersTrainings"
+                                data-bs-slide="prev">
+                                <span>&#8592;</span>
+                            </button>
+                            <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherUsersTrainings"
+                                data-bs-slide="next">
+                                <span>&#8594;</span>
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
 
-                <div id="otherUsersTrainings" class="carousel slide" data-bs-ride="carousel">
+                <div id="otherUsersTrainings" class="carousel slide pt-4" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for arr in arrOfOtherUsers %}
-                            <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
-                                <div class="d-block">
-                                    <div class="d-flex gap-2">
-                                        {% for user in arr %}
-                                            {{ main.card(
-                                                {   
-                                                    name:user.name,
-                                                    id: user.id,
-                                                }
-                                            )}}
-                                        {% endfor %}
+                        {% if arrOfOtherUsers|length != 0 %}
+                            {% for arr in arrOfOtherUsers %}
+                                <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
+                                    <div class="d-block">
+                                        <div class="d-flex gap-2">
+                                            {% for user in arr %}
+                                                {{ main.card(
+                                                    {   
+                                                        name:user.name,
+                                                        id: user.id,
+                                                    }
+                                                )}}
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <p>There are no trainings from other Users!</p>
+                        {% endif %}
+
                     </div>
                 </div>
             </section>
 
             <!-- Other gyms trainings -->
             <section class="my-5">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between border-bottom">
                     <h2 class="mb-2">Other Gyms Trainings</h2>
 
-                    <div class="w-1 p-3">
-                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherGymsTrainings"
-                            data-bs-slide="prev">
-                            <span>&#8592;</span>
-                        </button>
-                        <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherGymsTrainings"
-                            data-bs-slide="next">
-                            <span>&#8594;</span>
-                        </button>
-                    </div>
+                    {% if arrOfOtherGymUsers1|length > 1 %}
+                        <div class="w-1 p-3">
+                            <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherGymsTrainings"
+                                data-bs-slide="prev">
+                                <span>&#8592;</span>
+                            </button>
+                            <button type="button" class="btn btn-warning px-2 py-1" data-bs-target="#otherGymsTrainings"
+                                data-bs-slide="next">
+                                <span>&#8594;</span>
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
 
-                <div id="otherGymsTrainings" class="carousel slide" data-bs-ride="carousel">
+                <div id="otherGymsTrainings" class="carousel slide pt-4" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for arr in arrOfOtherGymUsers1 %}
-                            <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
-                                <div class="d-block">
-                                    <div class="d-flex gap-2">
-                                        {% for user in arr %}
-                                            {{ main.card(
-                                                {   
-                                                    name:user.username,
-                                                    id:user.username
-                                                }
-                                            )}}
-                                        {% endfor %}
+                        {% if arrOfOtherGymUsers1|length != 0 %}
+                            {% for arr in arrOfOtherGymUsers1 %}
+                                <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %} data-bs-interval="6000">
+                                    <div class="d-block">
+                                        <div class="d-flex gap-2">
+                                            {% for user in arr %}
+                                                {{ main.card(
+                                                    {   
+                                                        name:user.username,
+                                                        id:user.username
+                                                    }
+                                                )}}
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <p>There are no trainings from other Gyms!</p>
+                        {% endif %}
                     </div>
                 </div>
             </section>
